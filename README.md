@@ -3,6 +3,8 @@ microdata-node [![Build Status](https://travis-ci.org/Janpot/microdata-node.svg)
 
 Cheerio based microdata parser. Aims to be compatible with http://www.w3.org/TR/microdata/#json.
 
+Demo over at http://janpot.github.io/microdata-node.
+
 ## Example:
 
 ```js
