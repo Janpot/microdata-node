@@ -117,14 +117,17 @@ describe('parser', function () {
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
 
-    assert.deepEqual(result.items[0].properties.address1, [{
-      type: ['http://schema.org/PostalAddress'],
-      properties: { street: ['street1'] }
-    }]);
-    assert.deepEqual(result.items[0].properties.address2, [{
-      type: ['http://schema.org/PostalAddress'],
-      properties: { street: ['street2'] }
-    }]);
+
+    assert.deepEqual(result.items[0].properties, {
+      address1: [{
+        type: ['http://schema.org/PostalAddress'],
+        properties: { street: ['street1'] }
+      }],
+      address2: [{
+        type: ['http://schema.org/PostalAddress'],
+        properties: { street: ['street2'] }
+      }]
+    });
   });
 
   it('collates properties', function () {
