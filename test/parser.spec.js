@@ -33,6 +33,27 @@ describe('parser', function () {
     assert.deepEqual(result.items[0].type, [ 'http://schema.org/Person' ]);
   });
 
+  it('finds a scope with multiple types', function () {
+    var $ = cheerio.load('<div itemscope itemtype=" http://schema.org/Person  http://schema.org/PostalAddress  ">hello</div>');
+    var result = parser.parse($);
+    assert.isArray(result.items);
+    assert.lengthOf(result.items, 1);
+    assert.deepEqual(result.items[0].type, [
+      'http://schema.org/Person',
+      'http://schema.org/PostalAddress'
+    ]);
+  });
+
+  it('finds a scope with type defined twice', function () {
+    var $ = cheerio.load('<div itemscope itemtype="http://schema.org/Person http://schema.org/Person">hello</div>');
+    var result = parser.parse($);
+    assert.isArray(result.items);
+    assert.lengthOf(result.items, 1);
+    assert.deepEqual(result.items[0].type, [
+      'http://schema.org/Person'
+    ]);
+  });
+
   it('finds a scope within an element', function () {
     var $ = cheerio.load('<div><div itemscope itemtype="http://schema.org/Person">hello</div></div>');
     var result = parser.parse($);
