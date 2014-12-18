@@ -142,4 +142,45 @@ describe('parser', function () {
     });
   });
 
+  it('handles empty propertynames', function () {
+    var $ = cheerio.load(
+      '<div itemscope itemtype="http://schema.org/Person">' +
+      '<div itemprop="">Jan</div>' +
+      '</div>'
+    );
+    var result = parser.parse($);
+    assert.isArray(result.items);
+    assert.lengthOf(result.items, 1);
+    assert.deepEqual(result.items[0].properties, {});
+  });
+
+  it('handles multiple propertynames', function () {
+    var $ = cheerio.load(
+      '<div itemscope itemtype="http://schema.org/Person">' +
+      '<div itemprop="name additionalName">Jan</div>' +
+      '</div>'
+    );
+    var result = parser.parse($);
+    assert.isArray(result.items);
+    assert.lengthOf(result.items, 1);
+    assert.deepEqual(result.items[0].properties, {
+      name: ['Jan'],
+      additionalName: ['Jan']
+    });
+  });
+
+  it('handles duplicated propertynames', function () {
+    var $ = cheerio.load(
+      '<div itemscope itemtype="http://schema.org/Person">' +
+      '<div itemprop="  name  name ">Jan</div>' +
+      '</div>'
+    );
+    var result = parser.parse($);
+    assert.isArray(result.items);
+    assert.lengthOf(result.items, 1);
+    assert.deepEqual(result.items[0].properties, {
+      name: ['Jan']
+    });
+  });
+
 });
