@@ -1,7 +1,7 @@
 microdata-node [![Build Status](https://travis-ci.org/Janpot/microdata-node.svg)](https://travis-ci.org/Janpot/microdata-node)
 ==============
 
-Cheerio based microdata parser
+Cheerio based microdata parser. Aims to be compatible with http://www.w3.org/TR/microdata/#json.
 
 ## Example:
 
