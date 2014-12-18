@@ -186,4 +186,20 @@ describe('parser', function () {
     });
   });
 
+  it('only parses specified nodes', function () {
+    var $ = cheerio.load(
+      '<div itemscope></div>' +
+      '<div itemscope></div>' +
+      '<div id="this-one" itemscope>' +
+      '<div itemprop="name">Jan</div>' +
+      '</div>'
+    );
+    var result = parser.parse($, $('#this-one'));
+    assert.isArray(result.items);
+    assert.lengthOf(result.items, 1);
+    assert.deepEqual(result.items[0].properties, {
+      name: ['Jan']
+    });
+  });
+
 });
