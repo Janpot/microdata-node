@@ -6,7 +6,7 @@ Cheerio based microdata parser
 ## Example:
 
     var cheerio = require('cheerio');
-    var microdata = require('./lib/index');
+    var microdata = require('microdata-node');
 
     var $ = cheerio.load(
       '<section itemscope itemtype="http://schema.org/Person"> ' +
@@ -52,22 +52,9 @@ Cheerio based microdata parser
                 "streetAddress": "1234 Peach Drive",
                 "addressLocality": "Warner Robins",
                 "addressRegion": "Georgia"
-              },
-              "children": []
+              }
             }
-          },
-          "children": [
-            {
-              "type": "http://schema.org/PostalAddress",
-              "id": null,
-              "props": {
-                "streetAddress": "1234 Peach Drive",
-                "addressLocality": "Warner Robins",
-                "addressRegion": "Georgia"
-              },
-              "children": []
-            }
-          ]
+          }
         }
       ]
     */
@@ -76,6 +63,6 @@ Cheerio based microdata parser
 
     microdata.parse($, [config])
 
-parses the provided cheerio object with optiona configuration.
+parses the provided cheerio object with optional configuration.
 
 `config.base`: base url to resolve url properties against.

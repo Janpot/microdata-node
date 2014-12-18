@@ -23,7 +23,6 @@ describe('parser', function () {
     assert.isObject(result[0]);
     assert.isNull(result[0].type);
     assert.isObject(result[0].props);
-    assert.lengthOf(result[0].children, 0);
   });
 
   it('finds a scope with a type', function () {
@@ -75,10 +74,10 @@ describe('parser', function () {
   it('finds a scope with childscopes', function () {
     var $ = cheerio.load(
       '<div itemscope itemtype="http://schema.org/Person">' +
-      '<div itemscope itemtype="http://schema.org/PostalAddress">' +
+      '<div itemprop="address1" itemscope itemtype="http://schema.org/PostalAddress">' +
       '<div itemprop="street">street1</div>' +
       '</div>' +
-      '<div itemscope itemtype="http://schema.org/PostalAddress">' +
+      '<div itemprop="address2" itemscope itemtype="http://schema.org/PostalAddress">' +
       '<div itemprop="street">street2</div>' +
       '</div>' +
       '</div>'
@@ -86,9 +85,17 @@ describe('parser', function () {
     var result = parser.parse($);
     assert.isArray(result);
     assert.lengthOf(result, 1);
-    assert.lengthOf(result[0].children, 2);
-    assert.deepEqual(result[0].children[0].props, { street: 'street1' });
-    assert.deepEqual(result[0].children[1].props, { street: 'street2' });
+
+    assert.deepEqual(result[0].props.address1, {
+      type: 'http://schema.org/PostalAddress',
+      id: null,
+      props: { street: 'street1' }
+    });
+    assert.deepEqual(result[0].props.address2, {
+      type: 'http://schema.org/PostalAddress',
+      id: null,
+      props: { street: 'street2' }
+    });
   });
 
   it('collates properties', function () {
