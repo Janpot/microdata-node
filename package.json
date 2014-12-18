@@ -1,0 +1,25 @@
+{
+  "name": "microdata-node-gh-page",
+  "version": "1.0.0",
+  "description": "Project page for microdata-node",
+  "scripts": {
+    "build": "browserify -o ./build/bundle.js -t brfs ./javascript/main.js",
+    "watch": "watchify -t brfs -o ./build/bundle.js ./javascript/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://janpot@github.com/Janpot/microdata-node.git"
+  },
+  "author": "Jan Potoms",
+  "license": "MIT",
+  "homepage": "https://janpot.github.io/microdata-node",
+  "devDependencies": {
+    "brfs": "^1.2.0",
+    "browserify": "^7.0.2",
+    "watchify": "^2.2.1"
+  },
+  "dependencies": {
+    "cheerio": "^0.18.0",
+    "microdata-node": "*"
+  }
+}
