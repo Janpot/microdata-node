@@ -30,7 +30,7 @@ var $ = cheerio.load(
   '</section>'
 );
 
-var result = microdata.parse($, {
+var result = microdata.parse($, null, {
   base: 'http://www.example.com'
 });
 console.log(JSON.stringify(result, null, 2));
@@ -67,8 +67,10 @@ Output:
 
 ## API
 
-    microdata.parse($, [config])
+    microdata.parse($, [$nodes], [config])
 
 parses the provided cheerio object with optional configuration.
+
+Optionally specify a subset of nodes to parse. Can be obtained by `$('.nodes-to-parse')`.
 
 `config.base`: base url to resolve url properties against.
