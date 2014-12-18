@@ -39,28 +39,30 @@ console.log(JSON.stringify(result, null, 2));
 Output:
 
 ```json
-[
-  {
-    "type": [ "http://schema.org/Person" ],
-    "properties": {
-      "name": [ "John Doe" ],
-      "jobTitle": [ "graduate research assistant" ],
-      "affiliation": [ "University of Dreams" ],
-      "additionalName": [ "Johnny" ],
-      "url": [ "http://www.johnnyd.com/" ],
-      "address": [
-        {
-          "type": [ "http://schema.org/PostalAddress" ],
-          "properties": {
-            "streetAddress": [ "1234 Peach Drive" ],
-            "addressLocality": [ "Warner Robins" ],
-            "addressRegion": [ "Georgia" ]
+{
+  "items": [
+    {
+      "type": [ "http://schema.org/Person" ],
+      "properties": {
+        "name": [ "John Doe" ],
+        "jobTitle": [ "graduate research assistant" ],
+        "affiliation": [ "University of Dreams" ],
+        "additionalName": [ "Johnny" ],
+        "url": [ "http://www.johnnyd.com/" ],
+        "address": [
+          {
+            "type": [ "http://schema.org/PostalAddress" ],
+            "properties": {
+              "streetAddress": [ "1234 Peach Drive" ],
+              "addressLocality": [ "Warner Robins" ],
+              "addressRegion": [ "Georgia" ]
+            }
           }
-        }
-      ]
+        ]
+      }
     }
-  }
-]
+  ]
+}
 ```
 
 ## API
