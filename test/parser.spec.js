@@ -75,8 +75,8 @@ describe('parser', function () {
   it('finds multiple items within an element', function () {
     var $ = cheerio.load(
       '<div>' +
-      '<div itemscope itemtype="http://schema.org/Person">hello</div>' +
-      '<div itemscope itemtype="http://schema.org/PostalAddress">hello</div>' +
+      '  <div itemscope itemtype="http://schema.org/Person">hello</div>' +
+      '  <div itemscope itemtype="http://schema.org/PostalAddress">hello</div>' +
       '</div>'
     );
     var result = parser.parse($);
@@ -89,8 +89,8 @@ describe('parser', function () {
   it('finds an item with properties', function () {
     var $ = cheerio.load(
       '<div itemscope itemtype="http://schema.org/Person">' +
-      '<div itemprop="name">Jan</div>' +
-      '<div><div itemprop="age">29</div></div>' +
+      '  <div itemprop="name">Jan</div>' +
+      '  <div><div itemprop="age">29</div></div>' +
       '</div>'
     );
     var result = parser.parse($);
@@ -105,12 +105,12 @@ describe('parser', function () {
   it('finds an item with childitems', function () {
     var $ = cheerio.load(
       '<div itemscope itemtype="http://schema.org/Person">' +
-      '<div itemprop="address1" itemscope itemtype="http://schema.org/PostalAddress">' +
-      '<div itemprop="street">street1</div>' +
-      '</div>' +
-      '<div itemprop="address2" itemscope itemtype="http://schema.org/PostalAddress">' +
-      '<div itemprop="street">street2</div>' +
-      '</div>' +
+      '  <div itemprop="address1" itemscope itemtype="http://schema.org/PostalAddress">' +
+      '    <div itemprop="street">street1</div>' +
+      '  </div>' +
+      '  <div itemprop="address2" itemscope itemtype="http://schema.org/PostalAddress">' +
+      '    <div itemprop="street">street2</div>' +
+      '  </div>' +
       '</div>'
     );
     var result = parser.parse($);
@@ -133,8 +133,8 @@ describe('parser', function () {
   it('collates properties', function () {
     var $ = cheerio.load(
       '<div itemscope itemtype="http://schema.org/Person">' +
-      '<div itemprop="name">Jan</div>' +
-      '<div itemprop="name">Potoms</div>' +
+      '  <div itemprop="name">Jan</div>' +
+      '  <div itemprop="name">Potoms</div>' +
       '</div>'
     );
     var result = parser.parse($);
@@ -148,7 +148,7 @@ describe('parser', function () {
   it('handles empty propertynames', function () {
     var $ = cheerio.load(
       '<div itemscope itemtype="http://schema.org/Person">' +
-      '<div itemprop="">Jan</div>' +
+      '  <div itemprop="">Jan</div>' +
       '</div>'
     );
     var result = parser.parse($);
@@ -160,7 +160,7 @@ describe('parser', function () {
   it('handles multiple propertynames', function () {
     var $ = cheerio.load(
       '<div itemscope itemtype="http://schema.org/Person">' +
-      '<div itemprop="name additionalName">Jan</div>' +
+      '  <div itemprop="name additionalName">Jan</div>' +
       '</div>'
     );
     var result = parser.parse($);
@@ -175,7 +175,7 @@ describe('parser', function () {
   it('handles duplicated propertynames', function () {
     var $ = cheerio.load(
       '<div itemscope itemtype="http://schema.org/Person">' +
-      '<div itemprop="  name  name ">Jan</div>' +
+      '  <div itemprop="  name  name ">Jan</div>' +
       '</div>'
     );
     var result = parser.parse($);
@@ -191,7 +191,7 @@ describe('parser', function () {
       '<div itemscope></div>' +
       '<div itemscope></div>' +
       '<div class="this-one" itemscope>' +
-      '<div itemprop="name">Jan</div>' +
+      '  <div itemprop="name">Jan</div>' +
       '</div>'
     );
     var result = parser.parse($, $('.this-one'));
@@ -199,6 +199,22 @@ describe('parser', function () {
     assert.lengthOf(result.items, 1);
     assert.deepEqual(result.items[0].properties, {
       name: ['Jan']
+    });
+  });
+
+  it('parses itemrefs', function () {
+    var $ = cheerio.load(
+      '<div id="ref1">' +
+      '  <div itemprop="name">Jan</div>' +
+      '</div>' +
+      '<div id="ref2" itemprop="name">Potoms</div>' +
+      '<div itemscope itemtype="http://schema.org/Person" itemref="ref1 ref2"></div>'
+    );
+    var result = parser.parse($);
+    assert.isArray(result.items);
+    assert.lengthOf(result.items, 1);
+    assert.deepEqual(result.items[0].properties, {
+      name: ['Jan', 'Potoms']
     });
   });
 
