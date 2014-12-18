@@ -1,6 +1,6 @@
 {
   "name": "microdata-node",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Cheerio based microdata parser",
   "main": "lib",
   "scripts": {
