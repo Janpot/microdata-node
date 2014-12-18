@@ -1,0 +1,32 @@
+{
+  "name": "microdata-node",
+  "version": "0.0.1",
+  "description": "Cheerio based microdata parser",
+  "main": "lib",
+  "scripts": {
+    "test": "npm run lint && npm run mocha",
+    "mocha": "mocha ./test",
+    "mocha-watch": "mocha -w ./test",
+    "lint": "jshint --reporter node_modules/jshint-stylish/stylish.js ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://janpot@github.com/Janpot/microdata-node.git"
+  },
+  "keywords": [
+    "microdata",
+    "parser"
+  ],
+  "author": "Jan Potoms",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Janpot/microdata-node/issues"
+  },
+  "homepage": "https://github.com/Janpot/microdata-node",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "cheerio": "^0.18.0",
+    "jshint-stylish": "^1.0.0",
+    "mocha": "^2.0.1"
+  }
+}

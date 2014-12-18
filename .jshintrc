@@ -1,0 +1,27 @@
+{
+  "indent"    : 2,
+  "maxerr"    : 50,
+
+  "node"      : true,
+  "devel"     : true,
+
+  "curly"     : true,
+  "eqeqeq"    : true,
+  "immed"     : true,
+  "latedef"   : true,
+  "newcap"    : true,
+  "noarg"     : true,
+  "noempty"   : true,
+  "nonew"     : true,
+  "unused"    : true,
+  "trailing"  : true,
+  "strict"    : true,
+  "quotmark"  : true,
+  
+  "sub"       : true,
+  "undef"     : true,
+  "funcscope" : true,
+  "validthis" : true,
+  
+  "white"     : true
+}
