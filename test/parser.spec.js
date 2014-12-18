@@ -15,17 +15,19 @@ describe('parser', function () {
     assert.lengthOf(result.items, 0);
   });
 
-  it('finds an empty scope', function () {
+  it('finds an empty item', function () {
     var $ = cheerio.load('<div itemscope>hello</div>');
     var result = parser.parse($);
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
     assert.isObject(result.items[0]);
     assert.isUndefined(result.items[0].type);
+    assert.isUndefined(result.items[0].id);
     assert.isObject(result.items[0].properties);
+    assert.lengthOf(Object.keys(result.items[0].properties), 0);
   });
 
-  it('finds a scope with a type', function () {
+  it('finds an item with a type', function () {
     var $ = cheerio.load('<div itemscope itemtype="http://schema.org/Person">hello</div>');
     var result = parser.parse($);
     assert.isArray(result.items);
@@ -33,7 +35,15 @@ describe('parser', function () {
     assert.deepEqual(result.items[0].type, [ 'http://schema.org/Person' ]);
   });
 
-  it('finds a scope with multiple types', function () {
+  it('finds an item with a global id', function () {
+    var $ = cheerio.load('<div itemscope itemid="urn:isbn:0-330-34032-8">hello</div>');
+    var result = parser.parse($);
+    assert.isArray(result.items);
+    assert.lengthOf(result.items, 1);
+    assert.deepEqual(result.items[0].id, 'urn:isbn:0-330-34032-8');
+  });
+
+  it('finds an item with multiple types', function () {
     var $ = cheerio.load('<div itemscope itemtype=" http://schema.org/Person  http://schema.org/PostalAddress  ">hello</div>');
     var result = parser.parse($);
     assert.isArray(result.items);
@@ -44,7 +54,7 @@ describe('parser', function () {
     ]);
   });
 
-  it('finds a scope with type defined twice', function () {
+  it('finds an item with type defined twice', function () {
     var $ = cheerio.load('<div itemscope itemtype="http://schema.org/Person http://schema.org/Person">hello</div>');
     var result = parser.parse($);
     assert.isArray(result.items);
@@ -54,7 +64,7 @@ describe('parser', function () {
     ]);
   });
 
-  it('finds a scope within an element', function () {
+  it('finds an item within an element', function () {
     var $ = cheerio.load('<div><div itemscope itemtype="http://schema.org/Person">hello</div></div>');
     var result = parser.parse($);
     assert.isArray(result.items);
@@ -62,7 +72,7 @@ describe('parser', function () {
     assert.deepEqual(result.items[0].type, ['http://schema.org/Person']);
   });
 
-  it('finds multiple scopes within an element', function () {
+  it('finds multiple items within an element', function () {
     var $ = cheerio.load(
       '<div>' +
       '<div itemscope itemtype="http://schema.org/Person">hello</div>' +
@@ -76,7 +86,7 @@ describe('parser', function () {
     assert.deepEqual(result.items[1].type, ['http://schema.org/PostalAddress']);
   });
 
-  it('finds a scope with properties', function () {
+  it('finds an item with properties', function () {
     var $ = cheerio.load(
       '<div itemscope itemtype="http://schema.org/Person">' +
       '<div itemprop="name">Jan</div>' +
@@ -92,7 +102,7 @@ describe('parser', function () {
     });
   });
 
-  it('finds a scope with childscopes', function () {
+  it('finds an item with childitems', function () {
     var $ = cheerio.load(
       '<div itemscope itemtype="http://schema.org/Person">' +
       '<div itemprop="address1" itemscope itemtype="http://schema.org/PostalAddress">' +
