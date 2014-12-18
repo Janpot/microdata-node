@@ -41,23 +41,23 @@ Output:
 ```json
 [
   {
-    "type": "http://schema.org/Person",
-    "id": null,
-    "props": {
-      "name": "John Doe",
-      "jobTitle": "graduate research assistant",
-      "affiliation": "University of Dreams",
-      "additionalName": "Johnny",
-      "url": "http://www.johnnyd.com/",
-      "address": {
-        "type": "http://schema.org/PostalAddress",
-        "id": null,
-        "props": {
-          "streetAddress": "1234 Peach Drive",
-          "addressLocality": "Warner Robins",
-          "addressRegion": "Georgia"
+    "type": [ "http://schema.org/Person" ],
+    "properties": {
+      "name": [ "John Doe" ],
+      "jobTitle": [ "graduate research assistant" ],
+      "affiliation": [ "University of Dreams" ],
+      "additionalName": [ "Johnny" ],
+      "url": [ "http://www.johnnyd.com/" ],
+      "address": [
+        {
+          "type": [ "http://schema.org/PostalAddress" ],
+          "properties": {
+            "streetAddress": [ "1234 Peach Drive" ],
+            "addressLocality": [ "Warner Robins" ],
+            "addressRegion": [ "Georgia" ]
+          }
         }
-      }
+      ]
     }
   }
 ]

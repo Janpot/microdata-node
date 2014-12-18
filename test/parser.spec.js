@@ -21,8 +21,8 @@ describe('parser', function () {
     assert.isArray(result);
     assert.lengthOf(result, 1);
     assert.isObject(result[0]);
-    assert.isNull(result[0].type);
-    assert.isObject(result[0].props);
+    assert.isUndefined(result[0].type);
+    assert.isObject(result[0].properties);
   });
 
   it('finds a scope with a type', function () {
@@ -30,7 +30,7 @@ describe('parser', function () {
     var result = parser.parse($);
     assert.isArray(result);
     assert.lengthOf(result, 1);
-    assert.strictEqual(result[0].type, 'http://schema.org/Person');
+    assert.deepEqual(result[0].type, [ 'http://schema.org/Person' ]);
   });
 
   it('finds a scope within an element', function () {
@@ -38,7 +38,7 @@ describe('parser', function () {
     var result = parser.parse($);
     assert.isArray(result);
     assert.lengthOf(result, 1);
-    assert.strictEqual(result[0].type, 'http://schema.org/Person');
+    assert.deepEqual(result[0].type, ['http://schema.org/Person']);
   });
 
   it('finds multiple scopes within an element', function () {
@@ -51,8 +51,8 @@ describe('parser', function () {
     var result = parser.parse($);
     assert.isArray(result);
     assert.lengthOf(result, 2);
-    assert.strictEqual(result[0].type, 'http://schema.org/Person');
-    assert.strictEqual(result[1].type, 'http://schema.org/PostalAddress');
+    assert.deepEqual(result[0].type, ['http://schema.org/Person']);
+    assert.deepEqual(result[1].type, ['http://schema.org/PostalAddress']);
   });
 
   it('finds a scope with properties', function () {
@@ -65,9 +65,9 @@ describe('parser', function () {
     var result = parser.parse($);
     assert.isArray(result);
     assert.lengthOf(result, 1);
-    assert.deepEqual(result[0].props, {
-      name: 'Jan',
-      age: '29'
+    assert.deepEqual(result[0].properties, {
+      name: ['Jan'],
+      age: ['29']
     });
   });
 
@@ -86,16 +86,14 @@ describe('parser', function () {
     assert.isArray(result);
     assert.lengthOf(result, 1);
 
-    assert.deepEqual(result[0].props.address1, {
-      type: 'http://schema.org/PostalAddress',
-      id: null,
-      props: { street: 'street1' }
-    });
-    assert.deepEqual(result[0].props.address2, {
-      type: 'http://schema.org/PostalAddress',
-      id: null,
-      props: { street: 'street2' }
-    });
+    assert.deepEqual(result[0].properties.address1, [{
+      type: ['http://schema.org/PostalAddress'],
+      properties: { street: ['street1'] }
+    }]);
+    assert.deepEqual(result[0].properties.address2, [{
+      type: ['http://schema.org/PostalAddress'],
+      properties: { street: ['street2'] }
+    }]);
   });
 
   it('collates properties', function () {
@@ -108,7 +106,7 @@ describe('parser', function () {
     var result = parser.parse($);
     assert.isArray(result);
     assert.lengthOf(result, 1);
-    assert.deepEqual(result[0].props, {
+    assert.deepEqual(result[0].properties, {
       name: ['Jan', 'Potoms']
     });
   });
