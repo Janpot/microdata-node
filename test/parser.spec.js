@@ -89,7 +89,7 @@ describe('parser', function () {
   it('finds an item with properties', function () {
     var $ = cheerio.load(
       '<div itemscope itemtype="http://schema.org/Person">' +
-      '  <div itemprop="name">Jan</div>' +
+      '  <div itemprop="name">  Jan </div>' +
       '  <div><div itemprop="age">29</div></div>' +
       '</div>'
     );
