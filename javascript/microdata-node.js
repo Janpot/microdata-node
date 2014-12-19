@@ -1602,7 +1602,7 @@ function parse($, $nodes, config) {
       return resolveAttribute($node, 'datetime');
     } else {
       var text = $node.text();
-      text = text || text.trim();
+      text = text && text.trim();
       return text || '';
     }
   }
