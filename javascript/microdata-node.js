@@ -1440,6 +1440,8 @@ function Item(spec) {
     this.id = idString;
   }
 
+  this.memory = spec.memory || [];
+
   this.properties = {};
 }
 
@@ -1451,9 +1453,7 @@ Item.prototype.addProperty = function addProperty(name, value) {
 };
 
 Item.prototype.serialize = function serialize() {
-  var item = {
-    properties: {}
-  };
+  var item = {};
 
   if (this.type) {
     item.type = this.type;
@@ -1463,6 +1463,7 @@ Item.prototype.serialize = function serialize() {
     item.id = this.id;
   }
 
+  item.properties = {};
   Object.keys(this.properties).forEach(function (propName) {
     var values = this.properties[propName];
 
@@ -1510,33 +1511,34 @@ function cloneArray(array) {
 
 function parse($, $nodes, config) {
 
-  $nodes = $nodes || $.root();
   config = config || {};
   var items = [];
 
-  function walkNodes($nodes, currentItem, memory) {
+  function walkNodes($nodes, currentItem) {
     $nodes.each(function (i, node) {
       var $node = $(node);
-      var prop = splitUnique($node.attr('itemprop'));
+      var props = splitUnique($node.attr('itemprop'));
 
-      if (prop && currentItem) {
-        prop.forEach(function (propName) {
-          var value = parseProperty(node, memory);
+      if (props && currentItem) {
+        props.forEach(function (propName) {
+          var value = parseProperty(node, currentItem);
           currentItem.addProperty(propName, value);
         });
       } else if ($node.is('[itemscope]')) {
-        var newItem = parseItem(node, memory);
+        var newItem = parseItem(node, currentItem);
         if (newItem !== Item.ERROR) {
           items.push(newItem);
         }
       } else {
-        walkNodes($node.children(), currentItem, memory);
+        walkNodes($node.children(), currentItem);
       }
     });
   }
 
-  function parseItem(node, memory) {
+  function parseItem(node, currentItem) {
+    // keep memory of visited nodes to detect circular structures
     // REMARK: note the raw dom node instead of $node to guarantee uniqueness
+    var memory = currentItem && currentItem.memory || [];
     if (memory.indexOf(node) >= 0) {
       return Item.ERROR;
     }
@@ -1547,7 +1549,8 @@ function parse($, $nodes, config) {
 
     var item = new Item({
       type: splitUnique($node.attr('itemtype')),
-      id: $node.attr('itemid')
+      id: $node.attr('itemid'),
+      memory: newMemory
     });
 
     var refs = splitUnique($node.attr('itemref'));
@@ -1558,10 +1561,10 @@ function parse($, $nodes, config) {
         })
         .join(',');
       
-      walkNodes($(refsSelector), item, newMemory);
+      walkNodes($(refsSelector), item);
     }
 
-    walkNodes($node.children(), item, newMemory);
+    walkNodes($node.children(), item);
 
     return item;
   }
@@ -1579,10 +1582,10 @@ function parse($, $nodes, config) {
     }
   }
 
-  function parseProperty(node, memory) {
+  function parseProperty(node, currentItem) {
     var $node = $(node);
     if ($node.is('[itemscope]')) {
-      return parseItem(node, memory);
+      return parseItem(node, currentItem);
     } else if ($node.is('meta')) {
       return resolveAttribute($node, 'content');
     } else if ($node.is('audio,embed,iframe,img,source,track,video')) {
@@ -1598,11 +1601,13 @@ function parse($, $nodes, config) {
     } else if ($node.is('time')) {
       return resolveAttribute($node, 'datetime');
     } else {
-      return $node.text() || '';
+      var text = $node.text();
+      text = text || text.trim();
+      return text || '';
     }
   }
 
-  walkNodes($nodes, null, []);
+  walkNodes($nodes || $.root());
 
   return {
     items: items.map(function (item) {

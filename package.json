@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Project page for microdata-node",
   "scripts": {
-    "build": "npm run build-cheerio & npm run build-microdata-node",
+    "build": "npm update microdata-node cheerio && npm run build-cheerio && npm run build-microdata-node",
     "build-cheerio": "browserify -s cheerio -r cheerio -o ./javascript/cheerio.js",
     "build-microdata-node": "browserify -s microdata -r microdata-node -o ./javascript/microdata-node.js"
   },
