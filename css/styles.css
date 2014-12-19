@@ -10,7 +10,10 @@ html, body {
 }
 
 #editor, #output-pane, #base-url-input-container {
-  border: 1px solid #AAA;
+  border-top: 1px solid #999;
+  border-left: 1px solid #999;
+  border-bottom: 1px solid #DDD;
+  border-right: 1px solid #DDD;
 }
 
 #editable-container, #output-pane {
