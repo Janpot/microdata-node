@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Project page for microdata-node",
   "scripts": {
-    "build": "browserify -o ./build/bundle.js -t brfs ./javascript/main.js",
-    "watch": "watchify -t brfs -o ./build/bundle.js ./javascript/main.js"
+    "build": "npm run build-cheerio & npm run build-microdata-node",
+    "build-cheerio": "browserify -s cheerio -r cheerio -o ./javascript/cheerio.js",
+    "build-microdata-node": "browserify -s microdata -r microdata-node -o ./javascript/microdata-node.js"
   },
   "repository": {
     "type": "git",
@@ -14,9 +15,7 @@
   "license": "MIT",
   "homepage": "https://janpot.github.io/microdata-node",
   "devDependencies": {
-    "brfs": "^1.2.0",
-    "browserify": "^7.0.2",
-    "watchify": "^2.2.1"
+    "browserify": "^7.0.2"
   },
   "dependencies": {
     "cheerio": "^0.18.0",

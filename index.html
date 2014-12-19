@@ -2,25 +2,34 @@
 <html>
   <head>
     <title>Test</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./css/codemirror.css"/>
+    <link rel="stylesheet" href="./css/jquery.jsonview.css"/>
+    <link rel="stylesheet" href="./css/styles.css"/>
   </head>
   <body>
-    <div class="container-fluid">
-      <div class="page-header">
-        <h1>microdata-node demopage</h1>
-        <input id="base-url-input" class="form-control" placeholder="Baseurl" value="http://www.example.com"/>
+    <div id="editable-container">
+      <div id="base-url-input-container">
+        <input id="base-url-input" placeholder="Baseurl" value="http://www.example.com"/>
       </div>
-      <div cass="row">
-        <div class="col-md-6">
-          <textarea class="form-control" rows="25" id="to-parse-html"></textarea>
-        </div>
-        <div class="col-md-6">
-          <pre id="output"></pre>
-        </div>
+      <div id="editor-container">
+        <div id="editor"></div>
       </div>
+    </div>
+    <div id="output-pane">
+      <div id="output"></div>
+    </div>
 
-      <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-      <script src="./build/bundle.js"></script>
-    </script>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+    <script src="./javascript/jquery.jsonview.js"></script>
+    <script src="./javascript/codemirror.js"></script>
+    <script src="./javascript/codemirror-mode/xml.js"></script>
+    <script src="./javascript/codemirror-mode/javascript.js"></script>
+    <script src="./javascript/codemirror-mode/css.js"></script>
+    <script src="./javascript/codemirror-mode/htmlmixed.js"></script>
+    <script src="./javascript/example.js"></script>
+    <script src="./javascript/cheerio.js"></script>
+    <script src="./javascript/microdata-node.js"></script>
+    <script src="./javascript/main.js"></script>
   </body>
 </html>

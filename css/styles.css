@@ -1,0 +1,60 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+#editor, #output-pane, #base-url-input-container {
+  border: 1px solid #AAA;
+}
+
+#editable-container, #output-pane {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+}
+
+#editable-container {
+  left: 0;
+  right: 50%;
+}
+
+#base-url-input-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+}
+
+#base-url-input {
+  padding: 0 10px;
+  height: 100%;
+  width: 100%;
+  font-family: monospace;
+  font-size: 13px;
+  border: none;
+}
+
+#editor-container {
+  position: absolute;
+  top: 30px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#editor {
+  height: 100%;
+}
+
+#output-pane {
+  overflow: auto;
+  left: 50%;
+  right: 0;
+}
