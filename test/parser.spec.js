@@ -36,7 +36,7 @@ describe('parser', function () {
   });
 
   it('finds an item with a global id', function () {
-    var $ = cheerio.load('<div itemscope itemid="urn:isbn:0-330-34032-8">hello</div>');
+    var $ = cheerio.load('<div itemscope itemid="  urn:isbn:0-330-34032-8 ">hello</div>');
     var result = parser.parse($);
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
