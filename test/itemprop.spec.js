@@ -193,4 +193,18 @@ describe('itemprop', function () {
     });
   });
 
+  it('handles base tag for url properties', function () {
+    var $ = cheerio.load(
+      '<!doctype html>' +
+      '<head><base href="./base/"/></head>' +
+      '<body itemscope>' +
+      '  <a itemprop="property" href="./relative"></a>' +
+      '</body>'
+    );
+    var result = parser.parse($, null, { base: 'http://www.example.com/' });
+    assert.deepEqual(result.items[0].properties, {
+      property: [ 'http://www.example.com/base/relative' ]
+    });
+  });
+
 });
