@@ -181,4 +181,16 @@ describe('itemprop', function () {
     });
   });
 
+  it('handles absolute urls when no base is set', function () {
+    var $ = cheerio.load(
+      '<div itemscope>' +
+      '  <a itemprop="property" href="http://www.example.com"></a>' +
+      '</div>'
+    );
+    var result = parser.parse($, null, { base: undefined });
+    assert.deepEqual(result.items[0].properties, {
+      property: [ 'http://www.example.com' ]
+    });
+  });
+
 });
