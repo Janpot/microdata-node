@@ -189,7 +189,7 @@ describe('itemprop', function () {
     );
     var result = parser.parse($, null, { base: undefined });
     assert.deepEqual(result.items[0].properties, {
-      property: [ 'http://www.example.com' ]
+      property: [ 'http://www.example.com/' ]
     });
   });
 
