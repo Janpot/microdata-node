@@ -177,7 +177,7 @@ describe('itemprop', function () {
     );
     var result = parser.parse($, null, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
-      textProp: [ 'Text value', '' ]
+      textProp: [ '  Text value ', '  ' ]
     });
   });
 
@@ -189,14 +189,14 @@ describe('itemprop', function () {
     );
     var result = parser.parse($, null, { base: undefined });
     assert.deepEqual(result.items[0].properties, {
-      property: [ 'http://www.example.com/' ]
+      property: [ 'http://www.example.com' ]
     });
   });
 
   it('handles base tag for url properties', function () {
     var $ = cheerio.load(
       '<!doctype html>' +
-      '<head><base href="./base/"/></head>' +
+      '<head><base/><base href="./base/"/><base href="./other-base/"/></head>' +
       '<body itemscope>' +
       '  <a itemprop="property" href="./relative"></a>' +
       '</body>'
