@@ -78,11 +78,13 @@ describe('itemref', function () {
 
   it('handle nested item circular structure', function () {
     var $ = cheerio.load(
-      '<div id="ref">' +
-      '  <div itemprop="name">Other Jan</div>' +
-      '  <div itemprop="friend" itemscope>' +
+      '<div itemscope>' +
+      '  <div id="ref">' +
       '    <div itemprop="name">Jan</div>' +
-      '    <div itemprop="friend" itemscope itemref="ref"></div>' +
+      '    <div itemprop="friend" itemscope>' +
+      '      <div itemprop="name">Other Jan</div>' +
+      '      <div itemprop="friend" itemscope itemref="ref"></div>' +
+      '    </div>' +
       '  </div>' +
       '</div>'
     );
@@ -94,7 +96,12 @@ describe('itemref', function () {
       friend: [{
         properties: {
           name: [ 'Other Jan' ],
-          friend: [ 'ERROR' ]
+          friend: [{
+            properties: {
+              friend: [ 'ERROR' ],
+              name: [ 'Jan' ]
+            }
+          }]
         }
       }]
     });
