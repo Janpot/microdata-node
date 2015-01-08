@@ -50,7 +50,9 @@ function ttlToJsonld(turtle, base, callback) {
     if (triple) {
       triples.push(triple);
     } else {
-      callback(null, rdfToJsonld(n3Totriples(triples, prefixes)));
+      callback(null, rdfToJsonld(n3Totriples(triples, prefixes), {
+        useRdfType: true
+      }));
     }
   });
 }

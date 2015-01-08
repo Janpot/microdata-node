@@ -3,9 +3,8 @@
 'use strict';
 
 var jsonld = require('jsonld');
-var microdataToRdf = require('../lib/microdataToRdf');
 var ttlToJsonld = require('./ttlToJsonld');
-var rdfToJsonld = require('../lib/rdfToJsonld');
+var toJsonld = require('../lib/toJsonld');
 
 var BASE_URL = 'http://w3c.github.io/microdata-rdf/tests';
 
@@ -47,8 +46,7 @@ function runOne(testFolder, it) {
     var html = fs.readFileSync(htmlPath);
     var base = BASE_URL + '/' + manifest.action;
     var registry = JSON.parse(fs.readFileSync(folderPath + '/registry.json').toString());
-    var triples = microdataToRdf(html, { base: base, registry: registry });
-    var jsonldGot = rdfToJsonld(triples);
+    var jsonldGot = toJsonld(html, { base: base, registry: registry, useRdfType: true });
     var ttl = fs.readFileSync(folderPath + '/result.ttl').toString();
 
     ttlToJsonld(ttl, base, function (err, jsonldExpected) {
@@ -66,7 +64,7 @@ describe('suite', function () {
   var testFolders = fs.readdirSync(OUTPUT),
       only = null,
       skip = [ 'Test 0081', 'Test 0082', 'Test 0083', 'Test 0084' ];
-  //only = 'Test 0001';
+  //only = 'Test 0071';
 
   testFolders.forEach(function (folder) {
     var itFn = it;
