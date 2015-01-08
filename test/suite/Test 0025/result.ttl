@@ -1,0 +1,27 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:Product;
+  schema:aggregateRating [
+    a schema:AggregateRating;
+    schema:bestRating "100";
+    schema:ratingCount "24";
+    schema:ratingValue "87"];
+  schema:image <dell-30in-lcd.jpg>;
+  schema:name "Dell UltraSharp 30\" LCD Monitor";
+  schema:offers [
+    a schema:AggregateOffer;
+    schema:highPrice "$1495";
+    schema:lowPrice "$1250";
+    schema:offerCount "8";
+    schema:offers [
+      a schema:Offer;
+      schema:url <save-a-lot-monitors.com/dell-30.html>
+    ],[
+      a schema:Offer;
+      schema:url <jondoe-gadgets.com/dell-30.html>
+    ]
+  ]
+] .

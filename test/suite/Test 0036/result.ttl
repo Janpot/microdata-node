@@ -1,0 +1,12 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:Article;
+  schema:author "John Doe";
+  schema:interactionCount
+    "UserTweets:1203",
+    "UserComments:78";
+  schema:name "How to Tie a Reef Knot"
+] .

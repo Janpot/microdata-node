@@ -1,0 +1,21 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:MedicalGuidelineRecommendation;
+  schema:evidenceLevel schema:EvidenceLevelA;
+  schema:evidenceOrigin "multiple randomized clinical trials";
+  schema:recommendationStrength "Strong recommendation";
+  schema:subject
+    [ a schema:Drug; schema:name "NewvoDrug"],
+    [ a schema:MedicalCondition; schema:name "cardiac failure"]
+] .
+[
+  a schema:MedicalGuidelineContraindication;
+  schema:evidenceLevel schema:EvidenceLevelC;
+  schema:evidenceOrigin "standard of care";
+  schema:subject
+    [ a schema:MedicalCondition; schema:name "cardiac failure"],
+    [ a schema:TherapeuticProcedure; schema:name "appendectomy"]
+] .

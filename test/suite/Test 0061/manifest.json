@@ -1,0 +1,11 @@
+{
+  "@id": "_:b58",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0061.html",
+  "comment": "inherited type and token property",
+  "name": "Test 0061",
+  "result": "0061.ttl"
+}

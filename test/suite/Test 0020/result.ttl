@@ -1,0 +1,12 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:AudioObject;
+  schema:contentURL "http://media.freesound.org/data/0/previews/719__elmomo__12oclock_girona_preview.mp3";
+  schema:description "Recorded on a terrace of Girona a sunday morning";
+  schema:duration "T0M15S";
+  schema:encodingFormat "mp3";
+  schema:name "12oclock_girona.mp3"
+] .

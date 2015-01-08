@@ -1,0 +1,26 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:Movie;
+  schema:actor
+    [ a schema:Person; schema:name "Johnny Depp"],
+    [ a schema:Person; schema:name "Penelope Cruz"],
+    [ a schema:Person; schema:name "Ian McShane"];
+  schema:aggregateRating [
+    a schema:AggregateRating;
+    schema:bestRating "10";
+    schema:ratingCount "200";
+    schema:ratingValue "8";
+    schema:reviewCount "50"
+  ];
+  schema:author
+    [ a schema:Person; schema:name "Ted Elliott"],
+    [ a schema:Person; schema:name "Terry Rossio"];
+  schema:description """Jack Sparrow and Barbossa embark on a quest to
+ find the elusive fountain of youth, only to discover that Blackbeard and
+ his daughter are after it too.""";
+  schema:director [ a schema:Person; schema:name "Rob Marshall"];
+  schema:name "Pirates of the Carribean: On Stranger Tides (2011)"
+] .

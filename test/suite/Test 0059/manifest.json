@@ -1,0 +1,11 @@
+{
+  "@id": "_:b7",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0059.html",
+  "comment": "URI property relative @itemtype",
+  "name": "Test 0059",
+  "result": "0059.ttl"
+}

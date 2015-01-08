@@ -1,0 +1,28 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:MedicalWebPage;
+  schema:about [
+    a schema:MedicalCondition;
+    schema:name "High Blood Pressure", "hypertension"];
+  schema:aspect "Diagnosis", "Treatment";
+  schema:audience schema:Patient;
+  schema:lastReviewed "2011-09-14";
+  schema:specialty schema:Cardiovascular
+] .
+
+[
+  a schema:DrugClass;
+  schema:drug [
+    a schema:Drug;
+    schema:nonProprietaryName "propanaolol";
+    schema:otherName "Innopran"
+  ], [
+    a schema:Drug;
+    schema:nonProprietaryName "atenolol";
+    schema:otherName "Tenormin"
+  ];
+  schema:name "beta-blocker"
+] .

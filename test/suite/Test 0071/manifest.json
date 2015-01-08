@@ -1,0 +1,12 @@
+{
+  "@id": "_:b67",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0071.html",
+  "comment": "Vocabulary Expansion test with schema:additionalType",
+  "name": "Test 0071",
+  "registry": "http://www.w3.org/ns/md",
+  "result": "0071.ttl"
+}

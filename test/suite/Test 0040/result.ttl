@@ -1,0 +1,24 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:MusicAlbum;
+  schema:byArtist [ a schema:MusicGroup; schema:name "Radiohead"];
+  schema:genre "Alt/Punk";
+  schema:image <king-of-limbs.jpg>;
+  schema:name " King of Limbs ";
+  schema:numTracks "8";
+  schema:track [
+    a schema:MusicRecording;
+    schema:duration "PT5M14S";
+    schema:name "Bloom";
+    schema:url "/artist/radiohead/album/the-king-of-limbs/track/bloom"
+  ], [
+    a schema:MusicRecording;
+    schema:duration "PT4M40S";
+    schema:name "Morning Mr Magpie";
+    schema:url "/artist/radiohead/album/the-king-of-limbs/track/morning-mr-magpie"
+  ];
+  schema:url "/artist/radiohead/album/the-king-of-limbs"
+] .

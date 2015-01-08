@@ -1,0 +1,11 @@
+{
+  "@id": "_:b14",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0056.html",
+  "comment": "token property and multiple @itemtypes from different vocabularies",
+  "name": "Test 0056",
+  "result": "0056.ttl"
+}

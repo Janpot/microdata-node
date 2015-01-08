@@ -1,0 +1,24 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+ [ a schema:Person;
+   schema:address [
+     a schema:PostalAddress;
+     schema:addressLocality "Seattle";
+     schema:addressRegion "WA";
+     schema:postalCode "98052";
+     schema:streetAddress """
+      20341 Whitworth Institute
+      405 N. Whitworth
+    """
+  ];
+  schema:colleague <http://www.xyz.edu/students/alicejones.html>,
+    <http://www.xyz.edu/students/bobsmith.html>;
+  schema:email <mailto:jane-doe@xyz.edu>;
+  schema:image <janedoe.jpg>;
+  schema:jobTitle "Professor";
+  schema:name "Jane Doe";
+  schema:telephone "(425) 123-4567";
+  schema:url <http://www.janedoe.com>
+] .

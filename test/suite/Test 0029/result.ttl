@@ -1,0 +1,14 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:ItemList;
+  schema:itemListElement
+    "HP Pavilion dv6-6013cl",
+    "Dell XPS 15 (Sandy Bridge)",
+    "Lenovo ThinkPad X220";
+  schema:itemListOrder "Descending";
+  schema:mainContentOfPage "true";
+  schema:name "Top 10 laptops"
+] .

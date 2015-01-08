@@ -1,0 +1,13 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:Place;
+  schema:geo [
+    a schema:GeoCoordinates;
+    schema:latitude "40.75";
+    schema:longitude "73.98"
+  ];
+  schema:name "Empire State Building"
+] .

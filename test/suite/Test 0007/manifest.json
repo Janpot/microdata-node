@@ -1,0 +1,11 @@
+{
+  "@id": "_:b52",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0007.html",
+  "comment": "Use of iframe and @src",
+  "name": "Test 0007",
+  "result": "0007.ttl"
+}

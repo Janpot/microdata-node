@@ -1,0 +1,11 @@
+{
+  "@id": "_:b53",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0063.html",
+  "comment": "@itemref generates property values",
+  "name": "Test 0063",
+  "result": "0063.ttl"
+}

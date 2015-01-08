@@ -1,0 +1,11 @@
+{
+  "@id": "_:b63",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0073.html",
+  "comment": "Vocabulary Expansion test with rdfs:subPropertyOf",
+  "name": "Test 0073",
+  "result": "0073.ttl"
+}

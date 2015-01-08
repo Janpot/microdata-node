@@ -1,0 +1,11 @@
+{
+  "@id": "_:b4",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0005.html",
+  "comment": "Use of audio and @src",
+  "name": "Test 0005",
+  "result": "0005.ttl"
+}

@@ -1,0 +1,41 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:MedicalScholarlyArticle;
+  schema:about [
+    a schema:Drug;
+    schema:code <http://www.ncbi.nlm.nih.gov/mesh/D02.078.370.141.450>;
+    schema:name "Metformin"
+  ], [
+    a schema:MedicalCondition;
+    schema:code <http://www.ncbi.nlm.nih.gov/mesh/C18.452.394.750.149>;
+    schema:name "Diabetes Mellitus, Type 2"
+  ];
+  schema:audience schema:Clinician;
+  schema:author [
+    a schema:Person;
+    schema:affiliation "Medical University";
+    schema:name "Dr. John Smith"
+  ];
+  schema:datePublished "2012-03-24";
+  schema:name """New guidelines for metformin and
+      diabetes mellitus""";
+  schema:publicationType "Meta-Analysis"
+] .
+
+[
+  a schema:MedicalGuidelineRecommendation;
+  schema:evidenceLevel schema:EvidenceLevelA;
+  schema:recommendationStrength "strong recommendation";
+  schema:subject "metformin", "type 2 diabetes"
+] .
+
+<http://www.ncbi.nlm.nih.gov/mesh/C18.452.394.750.149> a schema:MedicalCode;
+  schema:code "C18.452.394.750.149";
+  schema:codingSystem "MeSH" .
+
+<http://www.ncbi.nlm.nih.gov/mesh/D02.078.370.141.450> a schema:MedicalCode;
+  schema:code "D02.078.370.141.450";
+  schema:codingSystem "MeSH" .

@@ -1,0 +1,22 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:Organization;
+  schema:address [
+    a schema:PostalAddress;
+    schema:addressLocality "Paris, France";
+    schema:postalCode "F-75002";
+    schema:streetAddress "38 avenue de l'Opera"
+  ];
+  schema:email "secretariat(at)google.org";
+  schema:faxNumber "( 33 1) 42 68 53 01 ";
+  schema:member [
+    a schema:Organization
+  ], [
+    a schema:Organization
+  ];
+  schema:name "Google.org (GOOG)";
+  schema:telephone "( 33 1) 42 68 53 00 "
+] .

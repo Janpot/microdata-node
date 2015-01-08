@@ -1,0 +1,11 @@
+{
+  "@id": "_:b47",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0013.html",
+  "comment": "Use of area and @href",
+  "name": "Test 0013",
+  "result": "0013.ttl"
+}

@@ -1,0 +1,32 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:TVSeries;
+  schema:actor [
+    a schema:Person;
+    schema:name "Justin Chambers"
+  ], [
+    a schema:Person;
+    schema:name "Jessica Capshaw"
+  ];
+  schema:name "Greys Anatomy";
+  schema:season [
+    a schema:TVSeason;
+    schema:datePublished "2005-05-22";
+    schema:name "Season 1";
+    schema:numberofEpisodes "14"
+  ], [
+    a schema:TVSeason;
+    schema:datePublished "2006-05-14";
+    schema:episode [
+      a schema:TVEpisode;
+      schema:episodeNumber "1";
+      schema:name "Episode 1"
+    ];
+    schema:name "Season 2";
+    schema:numberofEpisodes "27"
+  ]
+] .
+[ a schema:Person; schema:author "Shonda Rimes"] .

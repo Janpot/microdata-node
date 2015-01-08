@@ -1,0 +1,53 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[ a schema:MusicGroup;
+ schema:event [
+   a schema:Event;
+   schema:location "Memphis, TN, US";
+   schema:name "FedExForum";
+   schema:offers <ticketmaster.com/foofighters/may20-2011>;
+   schema:startDate "2011-05-20";
+   schema:url <foo-fighters-may20-fedexforum>
+  ], [
+    a schema:Event;
+    schema:location "Council Bluffs, IA, US";
+    schema:name "Mid America Center";
+    schema:offers <ticketmaster.com/foofighters/may23-2011>;
+    schema:startDate "2011-05-23";
+    schema:url <foo-fighters-may23-midamericacenter>
+  ];
+  schema:image <foofighters-1.jpg>,
+    <foofighters-2.jpg>,
+    <foofighters-3.jpg>;
+  schema:interactionCount "UserComments:18";
+  schema:name "Foo Fighters";
+  schema:track [
+    a schema:MusicRecording;
+    schema:audio <foo-fighters-rope-play.html>;
+    schema:duration "PT4M5S";
+    schema:inAlbum <foo-fighters-wasting-light.html>;
+    schema:interactionCount "UserPlays:14300";
+    schema:name "Rope";
+    schema:offers <foo-fighters-rope-buy.html>;
+    schema:url "foo-fighters-rope.html"
+  ], [
+    a schema:MusicRecording;
+    schema:audio <foo-fighters-everlong-play.html>;
+    schema:duration "PT6M33S";
+    schema:inAlbum <foo-fighters-color-and-shape.html>;
+    schema:name "Everlong";
+    schema:offers <foo-fighters-everlong-buy.html>;
+    schema:playCount "11700";
+    schema:url "foo-fighters-everlong.html"
+  ];
+  schema:video[
+    a schema:VideoObject;
+    schema:description """Catch this exclusive interview with
+    Dave Grohl and the Food Fighters about their new album, Rope.""";
+    schema:duration "T1M33S";
+    schema:name "Interview with the Foo Fighters";
+    schema:thumbnail "foo-fighters-interview-thumb.jpg"
+  ]
+] .

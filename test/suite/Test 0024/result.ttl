@@ -1,0 +1,46 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:Product;
+  schema:aggregateRating [
+    a schema:AggregateRating;
+    schema:ratingValue "3.5";
+    schema:reviewCount "11"];
+  schema:description """0.7 cubic feet countertop microwave.
+  Has six preset cooking categories and convenience features like
+  Add-A-Minute and Child Lock.""";
+  schema:name "Kenmore White 17\" Microwave";
+  schema:offers [
+    a schema:Offer;
+    schema:availability schema:InStock;
+    schema:price "$55.00"];
+  schema:review [
+    a schema:Review;
+    schema:author "Ellie";
+    schema:datePublished "2011-04-01";
+    schema:description """The lamp burned out and now I have to replace
+    it. """;
+    schema:name "Not a happy camper";
+    schema:reviewRating [
+      a schema:Rating;
+      schema:bestRating "5";
+      schema:ratingValue "1";
+      schema:worstRating "1"
+    ]
+  ], [
+    a schema:Review;
+    schema:author "Lucas";
+    schema:datePublished "2011-03-25";
+    schema:description """Great microwave for the price. It is small and
+    fits in my apartment.""";
+    schema:name "Value purchase";
+    schema:reviewRating [
+      a schema:Rating;
+      schema:bestRating "5";
+      schema:ratingValue "4";
+      schema:worstRating "1"
+    ]
+  ]
+] .

@@ -1,0 +1,11 @@
+{
+  "@id": "_:b2",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0074.html",
+  "comment": "Vocabulary Expansion test with owl:equivalentProperty",
+  "name": "Test 0074",
+  "result": "0074.ttl"
+}

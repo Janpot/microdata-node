@@ -1,0 +1,11 @@
+{
+  "@id": "_:b39",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0046.html",
+  "comment": "Use of time with @datetime xsd:time",
+  "name": "Test 0046",
+  "result": "0046.ttl"
+}

@@ -1,0 +1,16 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[ a schema:LocalBusiness;
+  schema:address [
+    a schema:PostalAddress;
+    schema:addressLocality "Mexico Beach";
+    schema:addressRegion "FL";
+    schema:streetAddress "3102 Highway 98"
+  ];
+  schema:description """ A superb collection of fine gifts and clothing
+  to accent your stay in Mexico Beach.""";
+  schema:name "Beachwalk Beachwear & Giftware";
+  schema:telephone "850-648-4200"
+] .

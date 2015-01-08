@@ -1,0 +1,45 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:MusicPlaylist;
+  schema:name "Classic Rock Playlist";
+  schema:numTracks "5";
+  schema:track [
+    a schema:MusicRecording;
+    schema:byArtist "Lynard Skynard";
+    schema:duration "PT4M45S";
+    schema:inAlbum "Second Helping";
+    schema:name "Sweet Home Alabama";
+    schema:url "sweet-home-alabama"
+  ], [
+    a schema:MusicRecording;
+    schema:byArtist "AC/DC";
+    schema:duration "PT3M32S";
+    schema:inAlbum "Back In Black";
+    schema:name "Shook you all Night Long";
+    schema:url "shook-you-all-night-long"
+  ], [
+    a schema:MusicRecording;
+    schema:byArtist "ZZ Top";
+    schema:duration "PT4M13S";
+    schema:inAlbum "Eliminator";
+    schema:name "Sharp Dressed Man";
+    schema:url "sharp-dressed-man"
+  ], [
+    a schema:MusicRecording;
+    schema:byArtist "Bob Seger";
+    schema:duration "PT3M12S";
+    schema:inAlbum "Stranger In Town";
+    schema:name "Old Time Rock and Roll";
+    schema:url "old-time-rock-and-roll"
+  ], [
+    a schema:MusicRecording;
+    schema:byArtist "John Cougar";
+    schema:duration "PT3M39S";
+    schema:inAlbum "American Fool";
+    schema:name "Hurt So Good";
+    schema:url "hurt-so-good"
+  ]
+] .

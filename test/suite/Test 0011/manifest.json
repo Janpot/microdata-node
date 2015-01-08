@@ -1,0 +1,11 @@
+{
+  "@id": "_:b30",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0011.html",
+  "comment": "Use of video and @src",
+  "name": "Test 0011",
+  "result": "0011.ttl"
+}

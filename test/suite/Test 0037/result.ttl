@@ -1,0 +1,11 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:CivicStructure;
+  schema:name "Springfield Town Hall";
+  schema:openingHours
+    "Mo-Fr 09:00-17:30",
+    "Sa 09:00-12:00"
+] .

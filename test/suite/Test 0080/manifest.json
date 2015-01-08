@@ -1,0 +1,11 @@
+{
+  "@id": "_:b15",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0080.html",
+  "comment": "Use of meter and xsd:string",
+  "name": "Test 0080",
+  "result": "0080.ttl"
+}

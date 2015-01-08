@@ -1,0 +1,30 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:Restaurant;
+  schema:address [
+    a schema:PostalAddress;
+    schema:addressLocality "Sunnyvale";
+    schema:addressRegion "CA";
+    schema:postalCode "94086";
+    schema:streetAddress "1901 Lemur Ave"];
+  schema:aggregateRating [
+    a schema:AggregateRating;
+    schema:ratingValue "4";
+    schema:reviewCount "250"];
+  schema:name "GreatFood";
+  schema:openingHours "Mo-Sa 11:00-14:30",
+    "Mo-Th 17:00-21:30",
+    "Fr-Sa 17:00-22:00";
+  schema:priceRange "$$";
+  schema:servesCuisine """
+    Middle Eastern
+  """,
+  """
+    Mediterranean
+  """;
+  schema:telephone "(408) 714-1489";
+  schema:url <http://www.dishdash.com>
+] .

@@ -22,5 +22,8 @@
   "funcscope" : true,
   "validthis" : true,
   
-  "white"     : true
+  "white"     : true,
+  "predef"    : [
+    "-Map"
+  ]
 }

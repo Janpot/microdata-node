@@ -1,0 +1,13 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:PostalAddress;
+  schema:addressCountry "United States";
+  schema:addressLocality "Mountain View";
+  schema:addressRegion "CA";
+  schema:name "Google Inc.";
+  schema:postOfficeBoxNumber "1234";
+  schema:postalCode "94043"
+] .

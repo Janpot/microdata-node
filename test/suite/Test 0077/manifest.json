@@ -1,0 +1,11 @@
+{
+  "@id": "_:b27",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0077.html",
+  "comment": "Use of data and string",
+  "name": "Test 0077",
+  "result": "0077.ttl"
+}

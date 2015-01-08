@@ -1,0 +1,11 @@
+{
+  "@id": "_:b0",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0008.html",
+  "comment": "Use of img and @src",
+  "name": "Test 0008",
+  "result": "0008.ttl"
+}

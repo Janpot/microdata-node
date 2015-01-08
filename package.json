@@ -7,7 +7,10 @@
     "test": "npm run lint && npm run mocha",
     "mocha": "mocha ./test",
     "mocha-watch": "mocha -w ./test",
-    "lint": "jshint --reporter node_modules/jshint-stylish/stylish.js ."
+    "lint": "jshint --reporter node_modules/jshint-stylish/stylish.js .",
+    "code-style": "jscs .",
+    "download-tests": "node ./scripts/download-tests.js",
+    "download-nt-tests": "rm -rf ./test/nt && mkdir ./test/nt && curl http://www.w3.org/2013/N-TriplesTests/TESTS.tar.gz | tar xz -C ./test/nt"
   },
   "repository": {
     "type": "git",
@@ -26,14 +29,18 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "cheerio": "^0.18.0",
+    "jscs": "^1.9.0",
     "jshint": "^2.5.10",
     "jshint-stylish": "^1.0.0",
     "jsonld": "^0.3.15",
     "mocha": "^2.0.1",
+    "n3": "^0.3.6",
     "request": "^2.51.0"
   },
   "dependencies": {
     "array-unique": "^0.1.1",
+    "domutils": "^1.5.0",
+    "es6-map": "^0.1.1",
     "is-absolute-url": "^1.0.0"
   }
 }

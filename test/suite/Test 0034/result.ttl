@@ -1,0 +1,13 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:ImageObject;
+  schema:author "Jane Doe";
+  schema:contentLocation "Puerto Vallarta, Mexico";
+  schema:contentURL <mexico-beach.jpg>;
+  schema:datePublished "2008-01-25";
+  schema:description "I took this picture while on vacation last year.";
+  schema:name "Beach in Mexico"
+] .

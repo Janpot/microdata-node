@@ -1,0 +1,54 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:MedicalCondition;
+  schema:alternateName "angina pectoris";
+  schema:associatedAnatomy [a schema:AnatomicalStructure; schema:name "heart"];
+  schema:cause
+    [ a schema:MedicalCause; schema:name "atherosclerosis"],
+     [ a schema:MedicalCause; schema:name "spasms of the epicardial artery"];
+  schema:code [ a schema:MedicalCode; schema:code "413"; schema:codingSystem "ICD-9"];
+  schema:differentialDiagnosis [
+    a schema:DDxElement;
+    schema:diagnosis [ a schema:MedicalCondition; schema:name "heart attack"];
+    schema:distinguishingSign [
+      a schema:MedicalSymptom;
+      schema:name "chest pain lasting at least 10 minutes at rest"
+    ], [
+      a schema:MedicalSymptom;
+      schema:name """repeated episodes of chest pain at rest
+        lasting 5 or more minutes
+      """
+    ], [
+      a schema:MedicalSymptom;
+      schema:name """an accelerating pattern of
+        chest discomfort (episodes that are more frequent, severe,
+        longer in duration, and precipitated by minimal exertion)
+      """
+    ]
+  ];
+  schema:name "Stable angina";
+  schema:possibleTreatment
+    [ a schema:Drug; schema:name "aspirin"],
+    [ a schema:DrugClass; schema:name "beta blockers"],
+    [ a schema:DrugClass; schema:name "ACE inhibitors"],
+    [ a schema:Drug; schema:name "nitroglycerine"];
+  schema:riskFactor
+    [ a schema:MedicalRiskFactor; schema:name "Age"],
+    [ a schema:MedicalRiskFactor; schema:name "Gender"],
+    [ a schema:MedicalRiskFactor; schema:name "Systolic blood pressure"],
+    [ a schema:MedicalRiskFactor; schema:name "Smoking"],
+    [ a schema:MedicalRiskFactor; schema:name "Total cholesterol and/or cholesterol:HDL ratio"],
+    [ a schema:MedicalRiskFactor; schema:name "Coronary artery disease"];
+  schema:secondaryPrevention
+    [ a schema:LifestyleModification; schema:name "stopping smoking"],
+    [ a schema:LifestyleModification; schema:name "weight management"],
+    [ a schema:LifestyleModification; schema:name "increased physical activity"];
+  schema:signOrSymptom
+    [ a schema:MedicalSymptom; schema:name "chest discomfort"],
+    [ a schema:MedicalSymptom;schema:name """feeling of tightness, heaviness,
+            or pain in the chest"""
+    ]
+] .

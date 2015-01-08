@@ -1,0 +1,11 @@
+{
+  "@id": "_:b48",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0081.html",
+  "comment": "Simple @itemprop-reverse (experimental)",
+  "name": "Test 0081",
+  "result": "0081.ttl"
+}

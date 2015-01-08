@@ -1,0 +1,13 @@
+{
+  "@comment": "This registry defines several artificial vocabularies used when running tests in the microdata to RDF test suite",
+  "http://expansion/": {
+    "properties": {
+      "equivalentProperty": {
+        "equivalentProperty": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+      },
+      "subPropertyOf": {
+        "subPropertyOf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+      }
+    }
+  }
+}

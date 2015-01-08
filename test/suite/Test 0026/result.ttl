@@ -1,0 +1,51 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:WebPage;
+  schema:breadcrumb """
+  Books >
+  Literature & Fiction >
+  Classics
+"""
+] .
+[
+  a schema:Book;
+  schema:aggregateRating [
+    a schema:AggregateRating;
+    schema:ratingValue "4";
+    schema:reviewCount "3077"
+  ];
+  schema:author <http://w3c.github.io/author/jd_salinger.html>;
+  schema:bookFormat schema:Paperback;
+  schema:datePublished "1991-05-01";
+  schema:image <catcher-in-the-rye-book-cover.jpg>;
+  schema:inLanguage "English";
+  schema:isbn "0316769487";
+  schema:name "The Catcher in the Rye";
+  schema:numberOfPages "224";
+  schema:offers [
+    a schema:Offer;
+    schema:availability schema:InStock;
+    schema:price "$6.99";
+    schema:priceCurrency "USD"
+  ];
+  schema:publisher "Little, Brown, and Company";
+  schema:review [
+    a schema:Review;
+    schema:author "John Doe";
+    schema:datePublished "2006-05-04";
+    schema:name "A masterpiece of literature";
+    schema:reviewBody """I really enjoyed this book. It captures the essential
+  challenge people face as they try make sense of their lives and grow to adulthood.""";
+    schema:reviewRating "5"
+  ], [
+    a schema:Review;
+    schema:author "Bob Smith";
+    schema:datePublished "2006-06-15";
+    schema:name "A good read.";
+    schema:reviewBody "Catcher in the Rye is a fun book. It's a good book to read.";
+    schema:reviewRating "4"
+  ]
+] .

@@ -1,0 +1,21 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:EducationalOrganization;
+  schema:address [
+    a schema:PostalAddress;
+    schema:addressLocality "Palo Alto";
+    schema:addressRegion "CA";
+    schema:postalCode "94301";
+    schema:streetAddress "50 Embarcadero Rd"];
+  schema:alumni [
+    a schema:Person;
+    schema:name "John Doe"
+  ], [
+    a schema:Person;
+    schema:name "Sarah Glames"
+  ];
+  schema:name "Palo Alto High School"
+] .

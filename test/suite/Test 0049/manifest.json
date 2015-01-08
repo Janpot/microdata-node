@@ -1,0 +1,11 @@
+{
+  "@id": "_:b32",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0049.html",
+  "comment": "Use of time with @datetime invalid",
+  "name": "Test 0049",
+  "result": "0049.ttl"
+}

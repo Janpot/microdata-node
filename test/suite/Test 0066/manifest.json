@@ -1,0 +1,11 @@
+{
+  "@id": "_:b78",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0066.html",
+  "comment": "@itemref with chaining",
+  "name": "Test 0066",
+  "result": "0066.ttl"
+}

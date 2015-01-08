@@ -1,0 +1,29 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:Recipe;
+  schema:author "John Smith";
+  schema:cookTime "PT1H";
+  schema:datePublished "2009-05-08";
+  schema:description """This classic banana bread recipe comes
+  from my mom -- the walnuts add a nice texture and flavor to the banana
+  bread.""";
+  schema:image <bananabread.jpg>;
+  schema:ingredients "3 or 4 ripe bananas, smashed",
+    "1 egg",
+    "3/4 cup of sugar";
+  schema:interactionCount "UserComments:140";
+  schema:name "Mom's World Famous Banana Bread";
+  schema:nutrition [
+    a schema:NutritionInformation;
+    schema:calories "240 calories";
+    schema:fatContent "9 grams fat"];
+  schema:prepTime "PT15M";
+  schema:recipeInstructions """
+  Preheat the oven to 350 degrees. Mix in the ingredients in a bowl. Add
+  the flour last. Pour the mixture into a loaf pan and bake for one hour.
+  """;
+  schema:recipeYield "1 loaf"
+] .

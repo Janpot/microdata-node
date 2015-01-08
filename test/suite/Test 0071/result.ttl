@@ -1,0 +1,4 @@
+@prefix schema: <http://schema.org/> .
+[] a schema:EducationalOrganization,
+      schema:Organization ;
+  schema:additionalType schema:EducationalOrganization .

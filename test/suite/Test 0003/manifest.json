@@ -1,0 +1,11 @@
+{
+  "@id": "_:b66",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0003.html",
+  "comment": "Item with itemprop having two properties",
+  "name": "Test 0003",
+  "result": "0003.ttl"
+}

@@ -1,0 +1,12 @@
+{
+  "@id": "_:b13",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "sdo_eg_md_9.html",
+  "comment": "Web Schemas TF: Schema.org tests: test 9 (format md)",
+  "name": "Test 0024",
+  "registry": "http://www.w3.org/ns/md",
+  "result": "sdo_eg_md_9.ttl"
+}

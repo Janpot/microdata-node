@@ -1,0 +1,11 @@
+{
+  "@id": "_:b64",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0004.html",
+  "comment": "Use of meta and @content",
+  "name": "Test 0004",
+  "result": "0004.ttl"
+}

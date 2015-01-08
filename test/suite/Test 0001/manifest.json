@@ -1,0 +1,11 @@
+{
+  "@id": "_:b72",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataEval"
+  ],
+  "action": "0001.html",
+  "comment": "Item with itemtype and literal itemprop",
+  "name": "Test 0001",
+  "result": "0001.ttl"
+}

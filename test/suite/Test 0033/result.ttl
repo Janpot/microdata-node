@@ -1,0 +1,11 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+
+[
+  a schema:CreativeWork;
+  schema:author "Sony";
+  schema:contentRating "Mature";
+  schema:image <videogame.jpg>;
+  schema:name "Resistance 3: Fall of Man"
+] .
