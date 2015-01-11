@@ -41,6 +41,7 @@
     "array-unique": "^0.1.1",
     "domutils": "^1.5.0",
     "es6-map": "^0.1.1",
+    "htmlparser2": "^3.8.2",
     "is-absolute-url": "^1.0.0"
   }
 }
