@@ -97,8 +97,12 @@ parses the provided html to [jsonld](http://json-ld.org/)
 **options**
 
 `config.base`: Base url to resolve url properties against.
+
 `config.registry`: The [registry](http://www.w3.org/TR/microdata-rdf/#dfn-registry) associates a URI prefix with one or more key-value pairs denoting processor behavior.
+
 `config.useRdfType`: (default `false`) If set to true, `rdf:type` predicates won't be converted to `@type` properties.
+
 `config.strict`: (default `false`) Parse strictly according to spec. Does not try to be forgiving of malformed microdata.
+
 `config.useNativeTypes`: (default `true`) Converts literals that are numbers or booleans to their corresponding JSOn type.
 
