@@ -20,7 +20,7 @@ function n3Totriples(triples, prefixes) {
       object.value = n3.Util.getLiteralValue(n3Object);
       object.type = n3.Util.getLiteralType(n3Object);
     } else {
-      if (n3.Util.isUri(n3Object)) {
+      if (n3.Util.isIRI(n3Object)) {
         object.id = expandPrefixedName(n3Object, prefixes);
       } else {
         object.id = n3Object;
@@ -41,7 +41,7 @@ function n3Totriples(triples, prefixes) {
 function ttlToJsonld(turtle, base, callback) {
   var triples = [];
   var parser = n3.Parser({
-    documentURI: base
+    documentIRI: base
   });
   parser.parse(turtle, function (error, triple, prefixes) {
     if (error) {
