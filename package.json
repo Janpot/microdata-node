@@ -1,6 +1,6 @@
 {
   "name": "microdata-node",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Microdata to json and json-ld parser",
   "main": "lib",
   "scripts": {
