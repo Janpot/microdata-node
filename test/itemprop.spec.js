@@ -15,9 +15,9 @@ describe('itemprop', function () {
       '  <meta itemprop="metaProp">' +
       '</div>'
     );
-    var result = parser.parse($);
+    var result = parser.toJson($.html());
     assert.deepEqual(result.items[0].properties, {
-      metaProp: [ 'value', '' ]
+      metaProp: [ '', '  value ' ]
     });
   });
 
@@ -47,42 +47,42 @@ describe('itemprop', function () {
       '  <video itemprop="videoProp"></video>' +
       '</div>'
     );
-    var result = parser.parse($, null, { base: 'http://www.example.com' });
+    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
       audioProp: [ 
         'http://www.example.com/audio',
-        'http://www.absolute.com/audio',
-        ''
+        '',
+        'http://www.absolute.com/audio'
       ],
       embedProp: [ 
-        'http://www.example.com/embed',
+        '',
         'http://www.absolute.com/embed',
-        ''
+        'http://www.example.com/embed'
       ],
       iframeProp: [ 
         'http://www.example.com/iframe',
-        'http://www.absolute.com/iframe',
-        ''
+        '',
+        'http://www.absolute.com/iframe'
       ],
       imgProp: [ 
-        'http://www.example.com/img',
         'http://www.absolute.com/img',
-        ''
+        '',
+        'http://www.example.com/img'
       ],
       sourceProp: [ 
-        'http://www.example.com/source',
         'http://www.absolute.com/source',
+        'http://www.example.com/source',
         ''
       ],
       trackProp: [ 
-        'http://www.example.com/track',
         'http://www.absolute.com/track',
-        ''
+        '',
+        'http://www.example.com/track'
       ],
       videoProp: [ 
-        'http://www.example.com/video',
+        '',
         'http://www.absolute.com/video',
-        ''
+        'http://www.example.com/video'
       ]
     });
   });
@@ -101,22 +101,22 @@ describe('itemprop', function () {
       '  <area itemprop="areaProp"></area>' +
       '</div>'
     );
-    var result = parser.parse($, null, { base: 'http://www.example.com' });
+    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
       aProp: [
-        'http://www.example.com/a',
+        '',
         'http://www.absolute.com/a',
-        ''
+        'http://www.example.com/a'
       ],
       linkProp: [
-        'http://www.example.com/link',
+        '',
         'http://www.absolute.com/link',
-        ''
+        'http://www.example.com/link'
       ],
       areaProp: [
-        'http://www.example.com/area',
+        '',
         'http://www.absolute.com/area',
-        ''
+        'http://www.example.com/area'
       ]
     });
   });
@@ -129,12 +129,12 @@ describe('itemprop', function () {
       '  <object itemprop="objectProp"></object>' +
       '</div>'
     );
-    var result = parser.parse($, null, { base: 'http://www.example.com' });
+    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
       objectProp: [
-        'http://www.example.com/object',
+        '',
         'http://www.absolute.com/object',
-        ''
+        'http://www.example.com/object'
       ]
     });
   });
@@ -148,10 +148,10 @@ describe('itemprop', function () {
       '  <meter itemprop="meterProp"></meter>' +
       '</div>'
     );
-    var result = parser.parse($, null, { base: 'http://www.example.com' });
+    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
-      dataProp: [ 'data-value', '' ],
-      meterProp: [ 'meter-value', '' ]
+      dataProp: [ '', '  data-value ' ],
+      meterProp: [ '', '  meter-value ' ]
     });
   });
 
@@ -162,9 +162,9 @@ describe('itemprop', function () {
       '  <time itemprop="timeProp"></time>' +
       '</div>'
     );
-    var result = parser.parse($, null, { base: 'http://www.example.com' });
+    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
-      timeProp: [ '2014-01-01', '' ]
+      timeProp: [ '', '2014-01-01' ]
     });
   });
 
@@ -175,9 +175,9 @@ describe('itemprop', function () {
       '  <span itemprop="textProp">  </span>' +
       '</div>'
     );
-    var result = parser.parse($, null, { base: 'http://www.example.com' });
+    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
-      textProp: [ '  Text value ', '  ' ]
+      textProp: [ '  ', '  Text value ' ]
     });
   });
 

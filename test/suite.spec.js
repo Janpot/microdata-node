@@ -4,7 +4,7 @@
 
 var jsonld = require('jsonld');
 var ttlToJsonld = require('./ttlToJsonld');
-var toJsonld = require('../lib/toJsonld');
+var toJsonld = require('..').toJsonld;
 
 var BASE_URL = 'http://w3c.github.io/microdata-rdf/tests';
 
