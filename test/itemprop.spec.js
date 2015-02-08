@@ -2,27 +2,25 @@
 
 'use strict';
 
-var cheerio = require('cheerio'),
-    assert  = require('chai').assert,
+var assert  = require('chai').assert,
     parser  = require('..');
 
 describe('itemprop', function () {
 
   it('handles <meta> elements', function () {
-    var $ = cheerio.load(
+    var html =
       '<div itemscope>' +
       '  <meta itemprop="metaProp" content="  value ">' +
       '  <meta itemprop="metaProp">' +
-      '</div>'
-    );
-    var result = parser.toJson($.html());
+      '</div>';
+    var result = parser.toJson(html);
     assert.deepEqual(result.items[0].properties, {
       metaProp: [ '', '  value ' ]
     });
   });
 
   it('handles [src] elements', function () {
-    var $ = cheerio.load(
+    var html =
       '<div itemscope>' +
       '  <audio itemprop="audioProp" src="./audio"></audio>' +
       '  <embed itemprop="embedProp" src="./embed"></embed>' +
@@ -45,9 +43,8 @@ describe('itemprop', function () {
       '  <source itemprop="sourceProp"></source>' +
       '  <track itemprop="trackProp"></track>' +
       '  <video itemprop="videoProp"></video>' +
-      '</div>'
-    );
-    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
+      '</div>';
+    var result = parser.toJson(html, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
       audioProp: [ 
         'http://www.example.com/audio',
@@ -88,7 +85,7 @@ describe('itemprop', function () {
   });
 
   it('handles [href] elements', function () {
-    var $ = cheerio.load(
+    var html =
       '<div itemscope>' +
       '  <a itemprop="aProp" href="./a"></a>' +
       '  <link itemprop="linkProp" href="./link"></link>' +
@@ -99,9 +96,8 @@ describe('itemprop', function () {
       '  <a itemprop="aProp"></a>' +
       '  <link itemprop="linkProp"></link>' +
       '  <area itemprop="areaProp"></area>' +
-      '</div>'
-    );
-    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
+      '</div>';
+    var result = parser.toJson(html, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
       aProp: [
         '',
@@ -122,14 +118,13 @@ describe('itemprop', function () {
   });
 
   it('handles <object> elements', function () {
-    var $ = cheerio.load(
+    var html =
       '<div itemscope>' +
       '  <object itemprop="objectProp" data="./object"></object>' +
       '  <object itemprop="objectProp" data="http://www.absolute.com/object"></object>' +
       '  <object itemprop="objectProp"></object>' +
-      '</div>'
-    );
-    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
+      '</div>';
+    var result = parser.toJson(html, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
       objectProp: [
         '',
@@ -140,15 +135,14 @@ describe('itemprop', function () {
   });
 
   it('handles [value] elements', function () {
-    var $ = cheerio.load(
+    var html =
       '<div itemscope>' +
       '  <data itemprop="dataProp" value="  data-value "></data>' +
       '  <data itemprop="dataProp"></data>' +
       '  <meter itemprop="meterProp" value="  meter-value "></meter>' +
       '  <meter itemprop="meterProp"></meter>' +
-      '</div>'
-    );
-    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
+      '</div>';
+    var result = parser.toJson(html, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
       dataProp: [ '', '  data-value ' ],
       meterProp: [ '', '  meter-value ' ]
@@ -156,52 +150,49 @@ describe('itemprop', function () {
   });
 
   it('handles <time> elements', function () {
-    var $ = cheerio.load(
+    var html =
       '<div itemscope>' +
       '  <time itemprop="timeProp" datetime="2014-01-01"></time>' +
       '  <time itemprop="timeProp"></time>' +
-      '</div>'
-    );
-    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
+      '</div>';
+    var result = parser.toJson(html, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
       timeProp: [ '', '2014-01-01' ]
     });
   });
 
   it('handles text elements', function () {
-    var $ = cheerio.load(
+    var html =
       '<div itemscope>' +
       '  <span itemprop="textProp">  Text value </span>' +
       '  <span itemprop="textProp">  </span>' +
-      '</div>'
-    );
-    var result = parser.toJson($.html(), { base: 'http://www.example.com' });
+      '</div>';
+    var result = parser.toJson(html, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
       textProp: [ '  ', '  Text value ' ]
     });
   });
 
   it('handles absolute urls when no base is set', function () {
-    var $ = cheerio.load(
+    var html =
       '<div itemscope>' +
       '  <a itemprop="property" href="http://www.example.com"></a>' +
-      '</div>'
-    );
-    var result = parser.parse($, null, { base: undefined });
+      '</div>';
+    var result = parser.toJson(html, { base: undefined });
     assert.deepEqual(result.items[0].properties, {
       property: [ 'http://www.example.com' ]
     });
   });
 
   it('handles base tag for url properties', function () {
-    var $ = cheerio.load(
+    // should also ignore the first empty base tag!
+    var html =
       '<!doctype html>' +
       '<head><base/><base href="./base/"/><base href="./other-base/"/></head>' +
       '<body itemscope>' +
       '  <a itemprop="property" href="./relative"></a>' +
-      '</body>'
-    );
-    var result = parser.parse($, null, { base: 'http://www.example.com/' });
+      '</body>';
+    var result = parser.toJson(html, { base: 'http://www.example.com/' });
     assert.deepEqual(result.items[0].properties, {
       property: [ 'http://www.example.com/base/relative' ]
     });
