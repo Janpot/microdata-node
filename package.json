@@ -28,7 +28,6 @@
   "homepage": "https://github.com/Janpot/microdata-node",
   "devDependencies": {
     "chai": "^1.10.0",
-    "cheerio": "^0.18.0",
     "jscs": "^1.9.0",
     "jshint": "^2.5.10",
     "jshint-stylish": "^1.0.0",
