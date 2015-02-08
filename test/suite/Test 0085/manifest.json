@@ -1,0 +1,10 @@
+{
+  "@id": "#test0085",
+  "@type": [
+    "mf:ManifestEntry",
+    "rdft:TestMicrodataNegativeSyntax"
+  ],
+  "action": "0085.html",
+  "comment": "detects recursion on @itemref",
+  "name": "Test 0085"
+}

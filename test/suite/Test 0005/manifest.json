@@ -1,5 +1,5 @@
 {
-  "@id": "_:b4",
+  "@id": "#test0005",
   "@type": [
     "mf:ManifestEntry",
     "rdft:TestMicrodataEval"

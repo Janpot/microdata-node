@@ -1,5 +1,5 @@
 {
-  "@id": "_:b6",
+  "@id": "#sdo_eg_md_12",
   "@type": [
     "mf:ManifestEntry",
     "rdft:TestMicrodataEval"

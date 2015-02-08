@@ -46,15 +46,31 @@ function runOne(testFolder, it) {
     var html = fs.readFileSync(htmlPath);
     var base = BASE_URL + '/' + manifest.action;
     var registry = JSON.parse(fs.readFileSync(folderPath + '/registry.json').toString());
-    var jsonldGot = toJsonld(html, { base: base, registry: registry, useRdfType: true });
-    var ttl = fs.readFileSync(folderPath + '/result.ttl').toString();
 
-    ttlToJsonld(ttl, base, function (err, jsonldExpected) {
-      if (err) {
-        return done(err);
-      }
-      assertEqualRdf(jsonldExpected, jsonldGot, { base: base }, done);
-    });
+    if (manifest['@type'].indexOf('rdft:TestMicrodataEval') >= 0) {
+
+      var jsonldGot = toJsonld(html, { base: base, registry: registry, useRdfType: true, strict: true });
+      var ttl = fs.readFileSync(folderPath + '/result.ttl').toString();
+
+      ttlToJsonld(ttl, base, function (err, jsonldExpected) {
+        if (err) {
+          return done(err);
+        }
+        assertEqualRdf(jsonldExpected, jsonldGot, { base: base }, done);
+      });
+
+    } else if (manifest['@type'].indexOf('rdft:TestMicrodataNegativeSyntax') >= 0) {
+
+      assert.throws(function () {
+        toJsonld(html, { base: base, registry: registry, useRdfType: true, strict: true });
+      });
+      done();
+
+    } else {
+
+      done(new Error('unknown test type'));
+
+    }
 
   });
 }

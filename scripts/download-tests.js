@@ -16,9 +16,11 @@ function fetchManifestEntry(manifest) {
   request.get({
     url: BASE_URL + '/' + manifest.action
   }).pipe(fs.createWriteStream(folderPath + '/action.html'));
-  request.get({
-    url: BASE_URL + '/' + manifest.result
-  }).pipe(fs.createWriteStream(folderPath + '/result.ttl'));
+  if (manifest.result) {
+    request.get({
+      url: BASE_URL + '/' + manifest.result
+    }).pipe(fs.createWriteStream(folderPath + '/result.ttl'));
+  }
   if (manifest.registry) {
     request.get({
       url: manifest.registry

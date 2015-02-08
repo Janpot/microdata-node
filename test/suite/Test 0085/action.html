@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test 0085</title>
+  </head>
+  <body>
+    <div itemscope>
+      <div id="ref">
+        <div itemprop="name">friend1</div>
+        <div itemprop="friend" itemscope>
+          <div itemprop="name">friend2</div>
+          <div itemprop="friend" itemscope itemref="ref"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
