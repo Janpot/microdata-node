@@ -198,4 +198,24 @@ describe('itemprop', function () {
     });
   });
 
+  it('handles malformed content attribs in non-strict mode', function () {
+    var html =
+      '<div itemscope>' +
+      '  <span itemprop="ratingValue" content="4.5" ></span>' +
+      '  <span itemprop="reviewCount" content="3018" ></span>' +
+      '</div>';
+
+    var strictResult = parser.toJson(html, { strict: true });
+    assert.deepEqual(strictResult.items[0].properties, {
+      ratingValue: [ '' ],
+      reviewCount: [ '' ]
+    });
+
+    var nonStrictResult = parser.toJson(html);
+    assert.deepEqual(nonStrictResult.items[0].properties, {
+      ratingValue: [ '4.5' ],
+      reviewCount: [ '3018' ]
+    });
+  });
+
 });
