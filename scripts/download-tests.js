@@ -26,7 +26,9 @@ function fetchManifestEntry (manifest) {
       url: manifest.registry
     }).pipe(fs.createWriteStream(folderPath + '/registry.json'));
   } else {
-    fs.writeFile(folderPath + '/registry.json', JSON.stringify(registry, null, 2));
+    fs.writeFile(folderPath + '/registry.json', JSON.stringify(registry, null, 2), function () {
+      return null;
+    });
   }
 }
 
