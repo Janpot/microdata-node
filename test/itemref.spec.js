@@ -2,11 +2,10 @@
 
 'use strict';
 
-var assert  = require('chai').assert,
-    parser  = require('..');
+var assert = require('chai').assert;
+var parser = require('..');
 
 describe('itemref', function () {
-
   it('parses itemrefs', function () {
     var html =
       '<div id="ref1">' +
@@ -95,5 +94,4 @@ describe('itemref', function () {
       }]
     });
   });
-
 });

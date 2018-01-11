@@ -8,7 +8,7 @@ var path = require('path');
 var OUTPUT = path.resolve(__dirname, '../test/suite');
 var registry = null;
 
-function fetchManifestEntry(manifest) {
+function fetchManifestEntry (manifest) {
   if (!fs.existsSync(OUTPUT)) fs.mkdirSync(OUTPUT);
   var folderPath = OUTPUT + '/' + manifest.name;
   if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath);
@@ -30,7 +30,7 @@ function fetchManifestEntry(manifest) {
   }
 }
 
-function fetchTests(callback) {
+function fetchTests (callback) {
   request.get({
     url: BASE_URL + '/manifest.jsonld',
     json: true
@@ -53,7 +53,7 @@ function fetchTests(callback) {
     });
   });
 }
- 
+
 fetchTests(function (err) {
   if (err) return console.log(err.stack);
   console.log('done');

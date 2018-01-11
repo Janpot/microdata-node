@@ -2,11 +2,10 @@
 
 'use strict';
 
-var assert  = require('chai').assert,
-    parser  = require('..');
+var assert = require('chai').assert;
+var parser = require('..');
 
 describe('itemprop', function () {
-
   it('handles <meta> elements', function () {
     var html =
       '<div itemscope>' +
@@ -46,37 +45,37 @@ describe('itemprop', function () {
       '</div>';
     var result = parser.toJson(html, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
-      audioProp: [ 
+      audioProp: [
         'http://www.example.com/audio',
         '',
         'http://www.absolute.com/audio'
       ],
-      embedProp: [ 
+      embedProp: [
         '',
         'http://www.absolute.com/embed',
         'http://www.example.com/embed'
       ],
-      iframeProp: [ 
+      iframeProp: [
         'http://www.example.com/iframe',
         '',
         'http://www.absolute.com/iframe'
       ],
-      imgProp: [ 
+      imgProp: [
         'http://www.absolute.com/img',
         '',
         'http://www.example.com/img'
       ],
-      sourceProp: [ 
+      sourceProp: [
         'http://www.absolute.com/source',
         'http://www.example.com/source',
         ''
       ],
-      trackProp: [ 
+      trackProp: [
         'http://www.absolute.com/track',
         '',
         'http://www.example.com/track'
       ],
-      videoProp: [ 
+      videoProp: [
         '',
         'http://www.absolute.com/video',
         'http://www.example.com/video'
@@ -217,5 +216,4 @@ describe('itemprop', function () {
       reviewCount: [ '3018' ]
     });
   });
-
 });

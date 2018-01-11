@@ -4,8 +4,7 @@
 var rdfToJsonld = require('../lib/rdfToJsonld');
 var n3 = require('n3');
 
-
-function expandPrefixedName(name, prefixes) {
+function expandPrefixedName (name, prefixes) {
   try {
     return n3.Util.expandPrefixedName(name, prefixes);
   } catch (e) {
@@ -13,8 +12,8 @@ function expandPrefixedName(name, prefixes) {
   }
 }
 
-function n3Totriples(triples, prefixes) {
-  function toTripleObject(n3Object) {
+function n3Totriples (triples, prefixes) {
+  function toTripleObject (n3Object) {
     var object = {};
     if (n3.Util.isLiteral(n3Object)) {
       object.value = n3.Util.getLiteralValue(n3Object);
@@ -38,7 +37,7 @@ function n3Totriples(triples, prefixes) {
     });
 }
 
-function ttlToJsonld(turtle, base, callback) {
+function ttlToJsonld (turtle, base, callback) {
   var triples = [];
   var parser = n3.Parser({
     documentIRI: base

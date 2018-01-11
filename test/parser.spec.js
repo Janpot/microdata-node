@@ -2,11 +2,10 @@
 
 'use strict';
 
-var assert  = require('chai').assert,
-    parser  = require('..');
+var assert = require('chai').assert;
+var parser = require('..');
 
 describe('parser', function () {
-
   it('finds no data when none defined', function () {
     var html =
       '<div>hello</div>';
@@ -84,7 +83,7 @@ describe('parser', function () {
   });
 
   it('finds multiple items within an element', function () {
-    var html = 
+    var html =
       '<div>' +
       '  <div itemscope itemtype="http://schema.org/Person">hello</div>' +
       '  <div itemscope itemtype="http://schema.org/PostalAddress">hello</div>' +
@@ -97,7 +96,7 @@ describe('parser', function () {
   });
 
   it('finds an item with properties', function () {
-    var html = 
+    var html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="name">Jan</div>' +
       '  <div><div itemprop="age">29</div></div>' +
@@ -112,7 +111,7 @@ describe('parser', function () {
   });
 
   it('finds an item with childitems', function () {
-    var html = 
+    var html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="address1" itemscope itemtype="http://schema.org/PostalAddress">' +
       '    <div itemprop="street">street1</div>' +
@@ -124,7 +123,6 @@ describe('parser', function () {
     var result = parser.toJson(html);
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
-
 
     assert.deepEqual(result.items[0].properties, {
       address1: [{
@@ -139,7 +137,7 @@ describe('parser', function () {
   });
 
   it('collates properties', function () {
-    var html = 
+    var html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="name">Jan</div>' +
       '  <div itemprop="name">Potoms</div>' +
@@ -153,7 +151,7 @@ describe('parser', function () {
   });
 
   it('handles empty propertynames', function () {
-    var html = 
+    var html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="">Jan</div>' +
       '</div>';
@@ -164,7 +162,7 @@ describe('parser', function () {
   });
 
   it('handles multiple propertynames', function () {
-    var html = 
+    var html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="name additionalName">Jan</div>' +
       '</div>';
@@ -178,7 +176,7 @@ describe('parser', function () {
   });
 
   it('handles duplicated propertynames', function () {
-    var html = 
+    var html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="  name  name ">Jan</div>' +
       '</div>';
@@ -191,7 +189,7 @@ describe('parser', function () {
   });
 
   it('finds top level items that are props in non-strict mode', function () {
-    var html = 
+    var html =
       '<div itemscope itemprop="someprop">' +
       '  <div itemprop="name">Jan</div>' +
       '  <div><div itemprop="age">29</div></div>' +
@@ -207,5 +205,4 @@ describe('parser', function () {
     assert.isArray(strictResult.items);
     assert.lengthOf(strictResult.items, 0);
   });
-
 });
