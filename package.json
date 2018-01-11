@@ -8,7 +8,6 @@
     "mocha": "mocha ./test",
     "mocha-watch": "mocha -w ./test",
     "lint": "semistandard --verbose | snazzy",
-    "code-style": "jscs .",
     "download-tests": "node ./scripts/download-tests.js",
     "download-nt-tests": "rm -rf ./test/nt && mkdir ./test/nt && curl http://www.w3.org/2013/N-TriplesTests/TESTS.tar.gz | tar xz -C ./test/nt"
   },
@@ -27,23 +26,20 @@
   },
   "homepage": "https://github.com/Janpot/microdata-node",
   "devDependencies": {
-    "chai": "^1.10.0",
-    "jscs": "^1.9.0",
-    "jshint": "^2.5.10",
-    "jshint-stylish": "^1.0.0",
-    "jsonld": "^0.3.15",
-    "mocha": "^2.0.1",
-    "n3": "^0.4.1",
+    "chai": "^4.1.2",
+    "jsonld": "^0.4.12",
+    "mocha": "^4.1.0",
+    "n3": "^0.11.2",
     "request": "^2.51.0",
     "semistandard": "^12.0.0",
     "snazzy": "^7.0.0"
   },
   "dependencies": {
-    "array-unique": "^0.1.1",
+    "array-unique": "^0.3.2",
     "domutils": "^1.5.1",
     "es6-map": "^0.1.1",
-    "extend": "^2.0.0",
+    "extend": "^3.0.1",
     "htmlparser2": "^3.8.2",
-    "is-absolute-url": "^1.0.0"
+    "is-absolute-url": "^2.1.0"
   }
 }
