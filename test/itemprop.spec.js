@@ -206,8 +206,8 @@ describe('itemprop', function () {
 
     var strictResult = parser.toJson(html, { strict: true });
     assert.deepEqual(strictResult.items[0].properties, {
-      ratingValue: [ '' ],
-      reviewCount: [ '' ]
+      ratingValue: [ '4.5' ],
+      reviewCount: [ '3018' ]
     });
 
     var nonStrictResult = parser.toJson(html);

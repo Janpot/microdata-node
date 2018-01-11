@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run lint && npm run mocha",
     "mocha": "mocha ./test",
-    "mocha-watch": "mocha -w ./test",
+    "watch:mocha": "npm run mocha -- -w",
     "lint": "semistandard --verbose | snazzy",
     "download-tests": "node ./scripts/download-tests.js",
     "download-nt-tests": "rm -rf ./test/nt && mkdir ./test/nt && curl http://www.w3.org/2013/N-TriplesTests/TESTS.tar.gz | tar xz -C ./test/nt"

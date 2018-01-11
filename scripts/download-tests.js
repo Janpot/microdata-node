@@ -5,7 +5,7 @@ var BASE_URL = 'http://w3c.github.io/microdata-rdf/tests';
 var request = require('request');
 var fs = require('fs');
 var path = require('path');
-var OUTPUT = path.resolve(__dirname, '../test/suite');
+var OUTPUT = path.resolve(__dirname, '../test/w3c-tests');
 var registry = null;
 
 function fetchManifestEntry (manifest) {

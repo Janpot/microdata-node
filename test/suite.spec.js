@@ -10,7 +10,6 @@ var BASE_URL = 'http://w3c.github.io/microdata-rdf/tests';
 
 var fs = require('fs');
 var path = require('path');
-var OUTPUT = path.resolve(__dirname, './suite');
 var assert = require('chai').assert;
 
 function assertEqualRdf (jsonldExpected, jsonldGot, options, callback) {
@@ -36,8 +35,7 @@ function assertEqualRdf (jsonldExpected, jsonldGot, options, callback) {
   });
 }
 
-function runOne (testFolder, it) {
-  var folderPath = OUTPUT + '/' + testFolder;
+function runOne (folderPath, it) {
   var manifest = JSON.parse(fs.readFileSync(folderPath + '/manifest.json'));
 
   it(manifest.name + ': ' + manifest.comment, function (done) {
@@ -67,19 +65,29 @@ function runOne (testFolder, it) {
   });
 }
 
-describe('suite', function () {
-  var testFolders = fs.readdirSync(OUTPUT);
-  var only = null;
-  var skip = [ 'Test 0081', 'Test 0082', 'Test 0083', 'Test 0084' ];
-  // only = 'Test 0071';
+function runFolder (parent, only = [], skip = []) {
+  fs.readdirSync(parent)
+    .forEach(function (folderName) {
+      var itFn = it;
+      if (only.includes(folderName)) {
+        itFn = it.only;
+      } else if (skip.includes(folderName)) {
+        itFn = it.skip;
+      }
+      var folder = path.resolve(parent, folderName);
+      runOne(folder, itFn);
+    });
+}
 
-  testFolders.forEach(function (folder) {
-    var itFn = it;
-    if (folder === only) {
-      itFn = it.only;
-    } else if (skip.indexOf(folder) >= 0) {
-      itFn = it.skip;
-    }
-    runOne(folder, itFn);
-  });
+describe('suite', function () {
+  runFolder(
+    path.resolve(__dirname, './w3c-tests'), [
+      // 'Test 0001'
+    ], [
+      'Test 0081',
+      'Test 0082',
+      'Test 0083',
+      'Test 0084'
+    ]
+  );
 });
