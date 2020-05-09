@@ -87,10 +87,10 @@ describe('itemref', function () {
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
     assert.deepEqual(result.items[0].properties, {
-      name: [ 'Jan' ],
+      name: ['Jan'],
       friend: [{
         properties: {
-          name: [ 'Other Jan' ],
+          name: ['Other Jan'],
           friend: ['ERROR']
         }
       }]

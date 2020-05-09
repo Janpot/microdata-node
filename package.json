@@ -31,8 +31,8 @@
     "mocha": "^4.1.0",
     "n3": "^0.11.2",
     "request": "^2.51.0",
-    "semistandard": "^12.0.0",
-    "snazzy": "^7.0.0"
+    "semistandard": "^14.2.0",
+    "snazzy": "^8.0.0"
   },
   "dependencies": {
     "array-unique": "^0.3.2",

@@ -33,7 +33,7 @@ describe('parser', function () {
     var result = parser.toJson(html);
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
-    assert.deepEqual(result.items[0].type, [ 'http://schema.org/Person' ]);
+    assert.deepEqual(result.items[0].type, ['http://schema.org/Person']);
   });
 
   it.skip('finds an item with a global id', function () {
@@ -79,7 +79,7 @@ describe('parser', function () {
     var result = parser.toJson(html);
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
-    assert.deepEqual(result.items[0].type, [ 'http://schema.org/Person' ]);
+    assert.deepEqual(result.items[0].type, ['http://schema.org/Person']);
   });
 
   it('finds multiple items within an element', function () {
@@ -91,8 +91,8 @@ describe('parser', function () {
     var result = parser.toJson(html);
     assert.isArray(result.items);
     assert.lengthOf(result.items, 2);
-    assert.deepEqual(result.items[0].type, [ 'http://schema.org/Person' ]);
-    assert.deepEqual(result.items[1].type, [ 'http://schema.org/PostalAddress' ]);
+    assert.deepEqual(result.items[0].type, ['http://schema.org/Person']);
+    assert.deepEqual(result.items[1].type, ['http://schema.org/PostalAddress']);
   });
 
   it('finds an item with properties', function () {
@@ -105,8 +105,8 @@ describe('parser', function () {
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
     assert.deepEqual(result.items[0].properties, {
-      name: [ 'Jan' ],
-      age: [ '29' ]
+      name: ['Jan'],
+      age: ['29']
     });
   });
 
@@ -126,12 +126,12 @@ describe('parser', function () {
 
     assert.deepEqual(result.items[0].properties, {
       address1: [{
-        type: [ 'http://schema.org/PostalAddress' ],
-        properties: { street: [ 'street1' ] }
+        type: ['http://schema.org/PostalAddress'],
+        properties: { street: ['street1'] }
       }],
       address2: [{
-        type: [ 'http://schema.org/PostalAddress' ],
-        properties: { street: [ 'street2' ] }
+        type: ['http://schema.org/PostalAddress'],
+        properties: { street: ['street2'] }
       }]
     });
   });
@@ -146,7 +146,7 @@ describe('parser', function () {
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
     assert.deepEqual(result.items[0].properties, {
-      name: [ 'Jan', 'Potoms' ]
+      name: ['Jan', 'Potoms']
     });
   });
 
@@ -170,8 +170,8 @@ describe('parser', function () {
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
     assert.deepEqual(result.items[0].properties, {
-      name: [ 'Jan' ],
-      additionalName: [ 'Jan' ]
+      name: ['Jan'],
+      additionalName: ['Jan']
     });
   });
 
@@ -184,7 +184,7 @@ describe('parser', function () {
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
     assert.deepEqual(result.items[0].properties, {
-      name: [ 'Jan' ]
+      name: ['Jan']
     });
   });
 
