@@ -8,11 +8,13 @@ var parser = require('..');
 describe('itemref', function () {
   it('parses itemrefs', function () {
     var html =
-      '<div id="ref1">' +
-      '  <div itemprop="name">Jan</div>' +
-      '</div>' +
-      '<div id="ref2" itemprop="name">Potoms</div>' +
-      '<div itemscope itemtype="http://schema.org/Person" itemref="ref1 ref2"></div>';
+      '<div>' +
+      '  <div id="ref1">' +
+      '    <div itemprop="name">Jan</div>' +
+      '  </div>' +
+      '  <div id="ref2" itemprop="name">Potoms</div>' +
+      '  <div itemscope itemtype="http://schema.org/Person" itemref="ref1 ref2"></div>' +
+      '</div>';
     var result = parser.toJson(html);
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
