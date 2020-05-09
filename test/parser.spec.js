@@ -146,7 +146,7 @@ describe('parser', function () {
     assert.isArray(result.items);
     assert.lengthOf(result.items, 1);
     assert.deepEqual(result.items[0].properties, {
-      name: [ 'Potoms', 'Jan' ]
+      name: [ 'Jan', 'Potoms' ]
     });
   });
 
