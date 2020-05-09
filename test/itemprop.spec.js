@@ -14,7 +14,7 @@ describe('itemprop', function () {
       '</div>';
     var result = parser.toJson(html);
     assert.deepEqual(result.items[0].properties, {
-      metaProp: [ '  value ', '' ]
+      metaProp: ['  value ', '']
     });
   });
 
@@ -143,8 +143,8 @@ describe('itemprop', function () {
       '</div>';
     var result = parser.toJson(html, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
-      dataProp: [ '  data-value ', '' ],
-      meterProp: [ '  meter-value ', '' ]
+      dataProp: ['  data-value ', ''],
+      meterProp: ['  meter-value ', '']
     });
   });
 
@@ -156,7 +156,7 @@ describe('itemprop', function () {
       '</div>';
     var result = parser.toJson(html, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
-      timeProp: [ '2014-01-01', '' ]
+      timeProp: ['2014-01-01', '']
     });
   });
 
@@ -168,7 +168,7 @@ describe('itemprop', function () {
       '</div>';
     var result = parser.toJson(html, { base: 'http://www.example.com' });
     assert.deepEqual(result.items[0].properties, {
-      textProp: [ '  Text value ', '  ' ]
+      textProp: ['  Text value ', '  ']
     });
   });
 
@@ -179,7 +179,7 @@ describe('itemprop', function () {
       '</div>';
     var result = parser.toJson(html, { base: undefined });
     assert.deepEqual(result.items[0].properties, {
-      property: [ 'http://www.example.com' ]
+      property: ['http://www.example.com']
     });
   });
 
@@ -193,7 +193,7 @@ describe('itemprop', function () {
       '</body>';
     var result = parser.toJson(html, { base: 'http://www.example.com/' });
     assert.deepEqual(result.items[0].properties, {
-      property: [ 'http://www.example.com/base/relative' ]
+      property: ['http://www.example.com/base/relative']
     });
   });
 
@@ -206,14 +206,14 @@ describe('itemprop', function () {
 
     var strictResult = parser.toJson(html, { strict: true });
     assert.deepEqual(strictResult.items[0].properties, {
-      ratingValue: [ '4.5' ],
-      reviewCount: [ '3018' ]
+      ratingValue: ['4.5'],
+      reviewCount: ['3018']
     });
 
     var nonStrictResult = parser.toJson(html);
     assert.deepEqual(nonStrictResult.items[0].properties, {
-      ratingValue: [ '4.5' ],
-      reviewCount: [ '3018' ]
+      ratingValue: ['4.5'],
+      reviewCount: ['3018']
     });
   });
 });
