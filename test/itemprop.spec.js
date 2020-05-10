@@ -83,6 +83,71 @@ describe('itemprop', function () {
     });
   });
 
+  it('handles [src] elements with invalid base option', function () {
+    var html =
+      '<div itemscope>' +
+      '  <audio itemprop="audioProp" src="./audio"></audio>' +
+      '  <embed itemprop="embedProp" src="./embed"></embed>' +
+      '  <iframe itemprop="iframeProp" src="./iframe"></iframe>' +
+      '  <img itemprop="imgProp" src="./img"></img>' +
+      '  <source itemprop="sourceProp" src="./source"></source>' +
+      '  <track itemprop="trackProp" src="./track"></track>' +
+      '  <video itemprop="videoProp" src="./video"></video>' +
+      '  <audio itemprop="audioProp" src="http://www.absolute.com/audio"></audio>' +
+      '  <embed itemprop="embedProp" src="http://www.absolute.com/embed"></embed>' +
+      '  <iframe itemprop="iframeProp" src="http://www.absolute.com/iframe"></iframe>' +
+      '  <img itemprop="imgProp" src="http://www.absolute.com/img"></img>' +
+      '  <source itemprop="sourceProp" src="http://www.absolute.com/source"></source>' +
+      '  <track itemprop="trackProp" src="http://www.absolute.com/track"></track>' +
+      '  <video itemprop="videoProp" src="http://www.absolute.com/video"></video>' +
+      '  <audio itemprop="audioProp"></audio>' +
+      '  <embed itemprop="embedProp"></embed>' +
+      '  <iframe itemprop="iframeProp"></iframe>' +
+      '  <img itemprop="imgProp"></img>' +
+      '  <source itemprop="sourceProp"></source>' +
+      '  <track itemprop="trackProp"></track>' +
+      '  <video itemprop="videoProp"></video>' +
+      '</div>';
+    var result = parser.toJson(html, { base: 'invalid url' });
+    assert.deepEqual(result.items[0].properties, {
+      audioProp: [
+        '',
+        'http://www.absolute.com/audio',
+        ''
+      ],
+      embedProp: [
+        '',
+        'http://www.absolute.com/embed',
+        ''
+      ],
+      iframeProp: [
+        '',
+        'http://www.absolute.com/iframe',
+        ''
+      ],
+      imgProp: [
+        '',
+        'http://www.absolute.com/img',
+        ''
+      ],
+      sourceProp: [
+        '',
+        'http://www.absolute.com/source',
+        ''
+      ],
+      trackProp: [
+        '',
+        'http://www.absolute.com/track',
+        ''
+      ],
+      videoProp: [
+        '',
+        'http://www.absolute.com/video',
+        ''
+      ]
+    });
+  });
+
   it('handles [href] elements', function () {
     var html =
       '<div itemscope>' +
