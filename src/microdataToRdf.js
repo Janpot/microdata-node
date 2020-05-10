@@ -1,7 +1,6 @@
 'use strict';
 
 var htmlparser = require('htmlparser2');
-var Map = require('es6-map');
 var isAbsoluteUrl = require('is-absolute-url');
 var microdataDom = require('./microdataDom');
 var constants = require('./constants');

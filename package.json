@@ -35,8 +35,6 @@
   },
   "dependencies": {
     "domutils": "^2.1.0",
-    "es6-map": "^0.1.1",
-    "extend": "^3.0.1",
     "htmlparser2": "^4.1.0",
     "is-absolute-url": "^3.0.3"
   }

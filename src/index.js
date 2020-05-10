@@ -1,6 +1,5 @@
 'use strict';
 
-var extend = require('extend');
 var microdataToRdf = require('./microdataToRdf');
 var rdfToJsonld = require('./rdfToJsonld');
 var rdfToJson = require('./rdfToJson');
@@ -10,15 +9,16 @@ function removeHashFragment (url) {
 }
 
 function normalizeConfig (config) {
-  config = extend({
+  config = {
     base: '',
     registry: {},
     strict: false,
     useRdfType: false,
-    useNativeTypes: true
-  }, config);
+    useNativeTypes: true,
+    ...config
+  };
 
-  config.base = removeHashFragment(config.base);
+  config.base = removeHashFragment(config.base || '');
   return config;
 }
 
