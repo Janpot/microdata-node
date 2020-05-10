@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "array-unique": "^0.3.2",
-    "domutils": "^1.7.0",
+    "domutils": "^2.1.0",
     "es6-map": "^0.1.1",
     "extend": "^3.0.1",
     "htmlparser2": "^4.1.0",
