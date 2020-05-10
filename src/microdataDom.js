@@ -1,33 +1,33 @@
 'use strict';
 
-var DOM = require('domutils');
-var { splitUnique } = require('./strings');
-var isAbsoluteUrl = require('is-absolute-url');
-var constants = require('./constants');
-var { tryResolve } = require('./urls');
-
-var XSD__DOUBLE = constants.XSD__DOUBLE;
-var XSD__INTEGER = constants.XSD__INTEGER;
-var XSD__DATE = constants.XSD__DATE;
-var XSD__TIME = constants.XSD__TIME;
-var XSD__DATE_TIME = constants.XSD__DATE_TIME;
-var XSD__G_YEAR_MONTH = constants.XSD__G_YEAR_MONTH;
-var XSD__G_YEAR = constants.XSD__G_YEAR;
-var XSD__DURATION = constants.XSD__DURATION;
+const DOM = require('domutils');
+const { splitUnique } = require('./strings');
+const isAbsoluteUrl = require('is-absolute-url');
+const { tryResolve } = require('./urls');
+const {
+  XSD__DOUBLE,
+  XSD__INTEGER,
+  XSD__DATE,
+  XSD__TIME,
+  XSD__DATE_TIME,
+  XSD__G_YEAR_MONTH,
+  XSD__G_YEAR,
+  XSD__DURATION
+} = require('./constants');
 
 function walk (nodes, visit) {
-  nodes.forEach(function (node) {
+  for (const node of nodes) {
     visit(node);
     if (node.children) {
       walk(node.children, visit);
     }
-  });
+  }
 }
 
 function mapIds (dom) {
-  var idMap = {};
-  walk(dom, function (node) {
-    var id = DOM.getAttributeValue(node, 'id');
+  const idMap = {};
+  walk(dom, (node) => {
+    const id = DOM.getAttributeValue(node, 'id');
     if (id && !idMap[id]) {
       idMap[id] = node;
     }
@@ -39,34 +39,35 @@ module.exports = function (dom, config) {
   config = config || {};
 
   // resolve the base url of the document
-  var base = config.base || '';
-  var baseElem = DOM.findOne(function (elem) {
+  let base = config.base || '';
+  const baseElem = DOM.findOne(function (elem) {
     return elem.name === 'base' && DOM.hasAttrib(elem, 'href');
   }, dom);
+
   if (baseElem) {
     base = tryResolve(baseElem.attribs.href, base);
   }
 
-  var strict = config.strict;
+  const strict = config.strict;
 
-  var idMap = mapIds(dom);
+  const idMap = mapIds(dom);
 
   function _getItems (nodes, isTopLevel) {
-    var items = [];
-    nodes.forEach(function (node) {
-      var childIsTopLEvel = isTopLevel;
-      var isStrictItem = isItem(node) && !isProperty(node);
-      var isNonStrictItem = isItem(node) && isTopLevel;
-      var isAnItem = isStrictItem || (!strict && isNonStrictItem);
+    let items = [];
+    for (const node of nodes) {
+      let childIsTopLEvel = isTopLevel;
+      const isStrictItem = isItem(node) && !isProperty(node);
+      const isNonStrictItem = isItem(node) && isTopLevel;
+      const isAnItem = isStrictItem || (!strict && isNonStrictItem);
       if (isAnItem) {
         childIsTopLEvel = false;
         items.push(node);
       }
       if (node.children) {
-        var childItems = _getItems(node.children, childIsTopLEvel);
+        const childItems = _getItems(node.children, childIsTopLEvel);
         items = items.concat(childItems);
       }
-    });
+    }
     return items;
   }
 
@@ -75,9 +76,9 @@ module.exports = function (dom, config) {
   }
 
   function getProperties (root) {
-    var results = [];
-    var memory = [];
-    var pending = [];
+    const results = [];
+    const memory = [];
+    let pending = [];
 
     memory.push(root);
 
@@ -86,20 +87,21 @@ module.exports = function (dom, config) {
     }
 
     if (root.attribs.itemref) {
-      splitUnique(root.attribs.itemref)
-        .forEach(function (id) {
-          if (idMap[id]) pending.push(idMap[id]);
-        });
+      for (const id of splitUnique(root.attribs.itemref)) {
+        if (idMap[id]) {
+          pending.push(idMap[id]);
+        }
+      }
     }
 
-    var current = pending.shift();
+    let current = pending.shift();
     while (current) {
       if (memory.indexOf(current) < 0) {
         memory.push(current);
         if (current.children && !isItem(current)) {
           pending = pending.concat(current.children);
         }
-        var props = getPropertyNames(current);
+        const props = getPropertyNames(current);
         if (props.length > 0) {
           results.push(current);
         }
@@ -127,31 +129,34 @@ module.exports = function (dom, config) {
   }
 
   function getItemId (item) {
-    var id = DOM.getAttributeValue(item, 'itemid');
+    let id = DOM.getAttributeValue(item, 'itemid');
     if (id) {
       id = id.trim();
-      if (isAbsoluteUrl(id)) return id;
-      return tryResolve(id, base);
+      if (isAbsoluteUrl(id)) {
+        return id;
+      } else {
+        return tryResolve(id, base);
+      }
     }
     return null;
   }
 
   function getItemType (item) {
-    var itemType = DOM.getAttributeValue(item, 'itemtype');
-    var types = (itemType ? splitUnique(itemType) : [])
+    const itemType = DOM.getAttributeValue(item, 'itemtype');
+    const types = (itemType ? splitUnique(itemType) : [])
       .filter(isAbsoluteUrl);
     return types;
   }
 
   function getPropertyNames (element) {
-    var itemProp = DOM.getAttributeValue(element, 'itemprop');
+    const itemProp = DOM.getAttributeValue(element, 'itemprop');
     return itemProp ? splitUnique(itemProp) : [];
   }
 
-  var srcProperty = ['audio', 'embed', 'iframe', 'img', 'source', 'track', 'video'];
-  var hrefProperty = ['a', 'area', 'link'];
+  const srcProperty = ['audio', 'embed', 'iframe', 'img', 'source', 'track', 'video'];
+  const hrefProperty = ['a', 'area', 'link'];
   function isName (element, names) {
-    var tagname = DOM.getName(element);
+    const tagname = DOM.getName(element);
     return names.indexOf(tagname) >= 0;
   }
 
@@ -172,9 +177,11 @@ module.exports = function (dom, config) {
   }
 
   function resolveNumberProperty (value) {
-    var number = Number(value);
-    if (isNaN(number)) return { value: value || '' };
-    var isInt = number === parseInt(number, 10);
+    const number = Number(value);
+    if (isNaN(number)) {
+      return { value: value || '' };
+    }
+    const isInt = number === parseInt(number, 10);
     return {
       value: number,
       type: isInt ? XSD__INTEGER : XSD__DOUBLE
@@ -183,7 +190,7 @@ module.exports = function (dom, config) {
 
   function resolveDateProperty (value) {
     value = value || '';
-    var result = {
+    const result = {
       value: value
     };
     if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
@@ -203,8 +210,12 @@ module.exports = function (dom, config) {
   }
 
   function getItemValue (element) {
-    if (!isProperty(element)) return null;
-    if (isItem(element)) return element;
+    if (!isProperty(element)) {
+      return null;
+    }
+    if (isItem(element)) {
+      return element;
+    }
     if (DOM.hasAttrib(element, 'content')) {
       return resolveProperty(DOM.getAttributeValue(element, 'content'));
     }
@@ -223,7 +234,7 @@ module.exports = function (dom, config) {
     if (isName(element, ['time'])) {
       return resolveDateProperty(DOM.getAttributeValue(element, 'datetime'));
     }
-    var value = DOM.getText(element);
+    const value = DOM.getText(element);
     if (value || strict) {
       return resolveProperty(value);
     }

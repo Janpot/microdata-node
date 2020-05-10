@@ -20,6 +20,4 @@ function tryResolve (url, base) {
   }
 }
 
-module.exports = {
-  tryResolve
-};
+exports.tryResolve = tryResolve;

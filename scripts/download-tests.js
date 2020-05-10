@@ -1,16 +1,16 @@
 'use strict';
 
-var BASE_URL = 'http://w3c.github.io/microdata-rdf/tests';
+const BASE_URL = 'http://w3c.github.io/microdata-rdf/tests';
 
-var request = require('request');
-var fs = require('fs');
-var path = require('path');
-var OUTPUT = path.resolve(__dirname, '../test/w3c-tests');
-var registry = null;
+const request = require('request');
+const fs = require('fs');
+const path = require('path');
+const OUTPUT = path.resolve(__dirname, '../test/w3c-tests');
+let registry = null;
 
 function fetchManifestEntry (manifest) {
   if (!fs.existsSync(OUTPUT)) fs.mkdirSync(OUTPUT);
-  var folderPath = OUTPUT + '/' + manifest.name;
+  const folderPath = OUTPUT + '/' + manifest.name;
   if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath);
   fs.writeFileSync(folderPath + '/manifest.json', JSON.stringify(manifest, null, 2));
   request.get({
@@ -41,7 +41,7 @@ function fetchTests (callback) {
     if (response.statusCode !== 200) {
       return callback(new Error('Bad response while fetching manifest'));
     }
-    var entries = manifest['@graph'][0].entries;
+    const entries = manifest['@graph'][0].entries;
     request.get({
       url: BASE_URL + '/test-registry.json',
       json: true

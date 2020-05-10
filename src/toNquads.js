@@ -1,6 +1,6 @@
 'use strict';
 
-var util = require('util');
+const util = require('util');
 
 function formatId (id) {
   if (/^_:/.test(id)) {
@@ -14,7 +14,7 @@ function formatValue (object) {
     return formatId(object.id);
   }
   if (object.value) {
-    var value = String(object.value)
+    const value = String(object.value)
       .replace(/"/gm, '\\"')
       .replace(/\n/gm, '\\n');
     if (object.type && object.type !== 'http://www.w3.org/2001/XMLSchema#string') {

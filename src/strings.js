@@ -8,6 +8,4 @@ function splitUnique (string) {
   }
 }
 
-module.exports = {
-  splitUnique
-};
+exports.splitUnique = splitUnique;

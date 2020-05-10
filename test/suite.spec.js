@@ -1,16 +1,16 @@
 /* eslint-env jest */
 
-var jsonld = require('jsonld');
-var ttlToJsonld = require('./ttlToJsonld');
-var toJsonld = require('../src').toJsonld;
+const jsonld = require('jsonld');
+const ttlToJsonld = require('./ttlToJsonld');
+const toJsonld = require('../src').toJsonld;
 
-var BASE_URL = 'http://w3c.github.io/microdata-rdf/tests';
+const BASE_URL = 'http://w3c.github.io/microdata-rdf/tests';
 
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
 async function assertEqualRdf (jsonldExpected, jsonldGot, options) {
-  var opts = {
+  const opts = {
     base: options.base,
     format: 'application/nquads'
   };
@@ -20,17 +20,17 @@ async function assertEqualRdf (jsonldExpected, jsonldGot, options) {
 }
 
 function runOne (folderPath, test) {
-  var manifest = JSON.parse(fs.readFileSync(folderPath + '/manifest.json'));
+  const manifest = JSON.parse(fs.readFileSync(folderPath + '/manifest.json'));
 
   test(manifest.name + ': ' + manifest.comment, async () => {
-    var htmlPath = folderPath + '/action.html';
-    var html = fs.readFileSync(htmlPath);
-    var base = BASE_URL + '/' + manifest.action;
-    var registry = JSON.parse(fs.readFileSync(folderPath + '/registry.json').toString());
+    const htmlPath = folderPath + '/action.html';
+    const html = fs.readFileSync(htmlPath);
+    const base = BASE_URL + '/' + manifest.action;
+    const registry = JSON.parse(fs.readFileSync(folderPath + '/registry.json').toString());
 
     if (manifest['@type'].indexOf('rdft:TestMicrodataEval') >= 0) {
-      var jsonldGot = toJsonld(html, { base: base, registry: registry, useRdfType: true, strict: true });
-      var ttl = fs.readFileSync(folderPath + '/result.ttl').toString();
+      const jsonldGot = toJsonld(html, { base: base, registry: registry, useRdfType: true, strict: true });
+      const ttl = fs.readFileSync(folderPath + '/result.ttl').toString();
 
       const jsonldExpected = await ttlToJsonld(ttl, base);
       await assertEqualRdf(jsonldExpected, jsonldGot, { base: base });
@@ -47,13 +47,13 @@ function runOne (folderPath, test) {
 function runFolder (parent, only = [], skip = []) {
   fs.readdirSync(parent)
     .forEach(function (folderName) {
-      var testFn = test;
+      let testFn = test;
       if (only.includes(folderName)) {
         testFn = test.only;
       } else if (skip.includes(folderName)) {
         testFn = test.skip;
       }
-      var folder = path.resolve(parent, folderName);
+      const folder = path.resolve(parent, folderName);
       runOne(folder, testFn);
     });
 }

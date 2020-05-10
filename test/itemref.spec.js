@@ -1,10 +1,10 @@
 /* eslint-env jest */
 
-var parser = require('../src');
+const parser = require('../src');
 
 describe('itemref', () => {
   test('parses itemrefs', () => {
-    var html =
+    const html =
       '<div>' +
       '  <div id="ref1">' +
       '    <div itemprop="name">Jan</div>' +
@@ -12,7 +12,7 @@ describe('itemref', () => {
       '  <div id="ref2" itemprop="name">Potoms</div>' +
       '  <div itemscope itemtype="http://schema.org/Person" itemref="ref1 ref2"></div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].properties).toEqual({
@@ -21,11 +21,11 @@ describe('itemref', () => {
   });
 
   test('parses multiple items with the same ref', () => {
-    var html =
+    const html =
       '<div id="ref" itemprop="name">Jan</div>' +
       '<div itemscope itemtype="http://schema.org/Person" itemref="ref"></div>' +
       '<div itemscope itemtype="http://schema.org/Person" itemref="ref"></div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(2);
     expect(result.items[0].properties).toEqual({
@@ -37,13 +37,13 @@ describe('itemref', () => {
   });
 
   test.skip('parses nested reffed items', function () {
-    var html =
+    const html =
       '<div itemscope itemid="#item1">' +
       '  <div id="ref" itemprop="property1" itemscope itemid="#sub-item1"></div>' +
       '  <div itemprop="property2" itemscope itemref="ref" itemid="#sub-item2">' +
       '  </div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result).toHaveProperty('.items[0].properties.property1[0].id', '#sub-item1');
@@ -55,13 +55,13 @@ describe('itemref', () => {
   });
 
   test('handle top-level circular structure', () => {
-    var html =
+    const html =
       '<div id="ref">' +
       '  <div itemscope itemref="ref">' +
       '    <div itemprop="name">Jan</div>' +
       '  </div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].properties).toEqual({
@@ -70,7 +70,7 @@ describe('itemref', () => {
   });
 
   test('handle nested item circular structure', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <div id="ref">' +
       '    <div itemprop="name">Jan</div>' +
@@ -80,7 +80,7 @@ describe('itemref', () => {
       '    </div>' +
       '  </div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].properties).toEqual({

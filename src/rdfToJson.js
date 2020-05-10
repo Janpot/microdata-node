@@ -1,6 +1,6 @@
 'use strict';
 
-var constants = require('./constants');
+const constants = require('./constants');
 
 function isBlank (id) {
   return id.indexOf('_:') === 0;
@@ -26,10 +26,10 @@ function resolveProperty (name, types, base) {
 function removeCircular (items, ancestors) {
   ancestors = ancestors || [];
   items.forEach(function (item) {
-    var newAncestors = ancestors.concat([item]);
+    const newAncestors = ancestors.concat([item]);
     Object.keys(item.properties)
       .map(function (property) {
-        var values = item.properties[property];
+        const values = item.properties[property];
         item.properties[property] = values
           .map(function (value) {
             if (newAncestors.indexOf(value) >= 0) {
@@ -39,7 +39,7 @@ function removeCircular (items, ancestors) {
             }
           });
 
-        var subItems = values
+        const subItems = values
           .filter(function (value) {
             return typeof value === 'object';
           });
@@ -50,10 +50,10 @@ function removeCircular (items, ancestors) {
 }
 
 function rdfToJson (triples, config) {
-  var itemMap = triples.reduce(function (itemMap, triple) {
-    var id = triple.subject;
+  const itemMap = triples.reduce(function (itemMap, triple) {
+    const id = triple.subject;
     if (!itemMap[id]) {
-      var item = {};
+      const item = {};
       if (!isBlank(id)) {
         item.id = id;
       }
@@ -64,23 +64,23 @@ function rdfToJson (triples, config) {
     return itemMap;
   }, {});
 
-  var topLevelItems = Object.keys(itemMap);
+  let topLevelItems = Object.keys(itemMap);
 
   triples.forEach(function (triple) {
     config = config || {};
-    var base = config.base || '';
-    var item = itemMap[triple.subject];
+    const base = config.base || '';
+    const item = itemMap[triple.subject];
 
     if (triple.predicate === constants.RDF__TYPE) {
       item.type = item.type || [];
       item.type.push(triple.object.id);
     } else {
-      var property = resolveProperty(triple.predicate, item.type, base);
-      var value = item.properties[property] || [];
-      var object = triple.object;
+      const property = resolveProperty(triple.predicate, item.type, base);
+      const value = item.properties[property] || [];
+      const object = triple.object;
       if (object.id) {
         if (isBlank(object.id)) {
-          var refItem = itemMap[object.id];
+          const refItem = itemMap[object.id];
           if (refItem) {
             value.push(refItem);
             topLevelItems = topLevelItems.filter(function (id) {
@@ -99,7 +99,7 @@ function rdfToJson (triples, config) {
     }
   });
 
-  var items = topLevelItems.map(function (id) {
+  const items = topLevelItems.map(function (id) {
     return itemMap[id];
   });
 

@@ -1,7 +1,7 @@
 'use strict';
 
-var rdfToJsonld = require('../src/rdfToJsonld');
-var n3 = require('n3');
+const rdfToJsonld = require('../src/rdfToJsonld');
+const n3 = require('n3');
 
 function expandPrefixedName (name, prefixes) {
   try {
@@ -13,7 +13,7 @@ function expandPrefixedName (name, prefixes) {
 
 function n3Totriples (triples, prefixes) {
   function toTripleObject (n3Object) {
-    var object = {};
+    const object = {};
     if (n3.Util.isLiteral(n3Object)) {
       object.value = n3Object.value;
       object.type = n3Object.datatype.id;
@@ -39,8 +39,8 @@ function n3Totriples (triples, prefixes) {
 
 async function ttlToJsonld (turtle, base) {
   return new Promise((resolve, reject) => {
-    var triples = [];
-    var parser = new n3.Parser({
+    const triples = [];
+    const parser = new n3.Parser({
       baseIRI: base
     });
     parser.parse(turtle, function (error, triple, prefixes) {

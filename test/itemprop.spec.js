@@ -1,22 +1,22 @@
 /* eslint-env jest */
 
-var parser = require('../src');
+const parser = require('../src');
 
 describe('itemprop', () => {
   test('handles <meta> elements', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <meta itemprop="metaProp" content="  value ">' +
       '  <meta itemprop="metaProp">' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(result.items[0].properties).toEqual({
       metaProp: ['  value ', '']
     });
   });
 
   test('handles [src] elements', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <audio itemprop="audioProp" src="./audio"></audio>' +
       '  <embed itemprop="embedProp" src="./embed"></embed>' +
@@ -40,7 +40,7 @@ describe('itemprop', () => {
       '  <track itemprop="trackProp"></track>' +
       '  <video itemprop="videoProp"></video>' +
       '</div>';
-    var result = parser.toJson(html, { base: 'http://www.example.com' });
+    const result = parser.toJson(html, { base: 'http://www.example.com' });
     expect(result.items[0].properties).toEqual({
       audioProp: [
         'http://www.example.com/audio',
@@ -81,7 +81,7 @@ describe('itemprop', () => {
   });
 
   test('handles [src] elements with invalid base option', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <audio itemprop="audioProp" src="./audio"></audio>' +
       '  <embed itemprop="embedProp" src="./embed"></embed>' +
@@ -105,7 +105,7 @@ describe('itemprop', () => {
       '  <track itemprop="trackProp"></track>' +
       '  <video itemprop="videoProp"></video>' +
       '</div>';
-    var result = parser.toJson(html, { base: 'invalid url' });
+    const result = parser.toJson(html, { base: 'invalid url' });
     expect(result.items[0].properties).toEqual({
       audioProp: [
         '',
@@ -146,7 +146,7 @@ describe('itemprop', () => {
   });
 
   test('handles [href] elements', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <a itemprop="aProp" href="./a"></a>' +
       '  <link itemprop="linkProp" href="./link"></link>' +
@@ -158,7 +158,7 @@ describe('itemprop', () => {
       '  <link itemprop="linkProp"></link>' +
       '  <area itemprop="areaProp"></area>' +
       '</div>';
-    var result = parser.toJson(html, { base: 'http://www.example.com' });
+    const result = parser.toJson(html, { base: 'http://www.example.com' });
     expect(result.items[0].properties).toEqual({
       aProp: [
         'http://www.example.com/a',
@@ -179,13 +179,13 @@ describe('itemprop', () => {
   });
 
   test('handles <object> elements', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <object itemprop="objectProp" data="./object"></object>' +
       '  <object itemprop="objectProp" data="http://www.absolute.com/object"></object>' +
       '  <object itemprop="objectProp"></object>' +
       '</div>';
-    var result = parser.toJson(html, { base: 'http://www.example.com' });
+    const result = parser.toJson(html, { base: 'http://www.example.com' });
     expect(result.items[0].properties).toEqual({
       objectProp: [
         'http://www.example.com/object',
@@ -196,14 +196,14 @@ describe('itemprop', () => {
   });
 
   test('handles [value] elements', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <data itemprop="dataProp" value="  data-value "></data>' +
       '  <data itemprop="dataProp"></data>' +
       '  <meter itemprop="meterProp" value="  meter-value "></meter>' +
       '  <meter itemprop="meterProp"></meter>' +
       '</div>';
-    var result = parser.toJson(html, { base: 'http://www.example.com' });
+    const result = parser.toJson(html, { base: 'http://www.example.com' });
     expect(result.items[0].properties).toEqual({
       dataProp: ['  data-value ', ''],
       meterProp: ['  meter-value ', '']
@@ -211,35 +211,35 @@ describe('itemprop', () => {
   });
 
   test('handles <time> elements', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <time itemprop="timeProp" datetime="2014-01-01"></time>' +
       '  <time itemprop="timeProp"></time>' +
       '</div>';
-    var result = parser.toJson(html, { base: 'http://www.example.com' });
+    const result = parser.toJson(html, { base: 'http://www.example.com' });
     expect(result.items[0].properties).toEqual({
       timeProp: ['2014-01-01', '']
     });
   });
 
   test('handles text elements', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <span itemprop="textProp">  Text value </span>' +
       '  <span itemprop="textProp">  </span>' +
       '</div>';
-    var result = parser.toJson(html, { base: 'http://www.example.com' });
+    const result = parser.toJson(html, { base: 'http://www.example.com' });
     expect(result.items[0].properties).toEqual({
       textProp: ['  Text value ', '  ']
     });
   });
 
   test('handles absolute urls when no base is set', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <a itemprop="property" href="http://www.example.com"></a>' +
       '</div>';
-    var result = parser.toJson(html, { base: undefined });
+    const result = parser.toJson(html, { base: undefined });
     expect(result.items[0].properties).toEqual({
       property: ['http://www.example.com']
     });
@@ -247,32 +247,32 @@ describe('itemprop', () => {
 
   test('handles base tag for url properties', () => {
     // should also ignore the first empty base tag!
-    var html =
+    const html =
       '<!doctype html>' +
       '<head><base/><base href="./base/"/><base href="./other-base/"/></head>' +
       '<body itemscope>' +
       '  <a itemprop="property" href="./relative"></a>' +
       '</body>';
-    var result = parser.toJson(html, { base: 'http://www.example.com/' });
+    const result = parser.toJson(html, { base: 'http://www.example.com/' });
     expect(result.items[0].properties).toEqual({
       property: ['http://www.example.com/base/relative']
     });
   });
 
   test('handles malformed content attribs in non-strict mode', () => {
-    var html =
+    const html =
       '<div itemscope>' +
       '  <span itemprop="ratingValue" content="4.5" ></span>' +
       '  <span itemprop="reviewCount" content="3018" ></span>' +
       '</div>';
 
-    var strictResult = parser.toJson(html, { strict: true });
+    const strictResult = parser.toJson(html, { strict: true });
     expect(strictResult.items[0].properties).toEqual({
       ratingValue: ['4.5'],
       reviewCount: ['3018']
     });
 
-    var nonStrictResult = parser.toJson(html);
+    const nonStrictResult = parser.toJson(html);
     expect(nonStrictResult.items[0].properties).toEqual({
       ratingValue: ['4.5'],
       reviewCount: ['3018']

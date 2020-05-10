@@ -1,8 +1,8 @@
 'use strict';
 
-var microdataToRdf = require('./microdataToRdf');
-var rdfToJsonld = require('./rdfToJsonld');
-var rdfToJson = require('./rdfToJson');
+const microdataToRdf = require('./microdataToRdf');
+const rdfToJsonld = require('./rdfToJsonld');
+const rdfToJson = require('./rdfToJson');
 
 function removeHashFragment (url) {
   return url.replace(/#[^#/?]$/, '');
@@ -32,6 +32,5 @@ function toJson (microdataHtml, config) {
   return rdfToJson(microdataToRdf(microdataHtml, config), config);
 }
 
-exports.parse = require('./parse');
 exports.toJsonld = toJsonld;
 exports.toJson = toJson;

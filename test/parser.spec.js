@@ -1,20 +1,20 @@
 /* eslint-env jest */
 
-var parser = require('../src');
+const parser = require('../src');
 
 describe('parser', () => {
   test('finds no data when none defined', () => {
-    var html =
+    const html =
       '<div>hello</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(0);
   });
 
   test.skip('finds an empty item', function () {
-    var html =
+    const html =
       '<div itemscope>hello</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(typeof result.items[0]).toBe('object');
@@ -25,28 +25,28 @@ describe('parser', () => {
   });
 
   test('finds an item with a type', () => {
-    var html =
+    const html =
       '<div itemscope itemtype="http://schema.org/Person">hello</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].type).toEqual(['http://schema.org/Person']);
   });
 
   test.skip('finds an item with a global id', function () {
-    var html =
+    const html =
       '<div itemscope itemid="  urn:isbn:0-330-34032-8 ">hello</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].id).toEqual('urn:isbn:0-330-34032-8');
   });
 
   test('finds an item with multiple types', () => {
-    var html = '<div itemscope itemtype=" http://schema.org/Person  http://schema.org/PostalAddress  ">' +
+    const html = '<div itemscope itemtype=" http://schema.org/Person  http://schema.org/PostalAddress  ">' +
     '  hello' +
     '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].type).toEqual([
@@ -56,11 +56,11 @@ describe('parser', () => {
   });
 
   test('finds an item with type defined twice', () => {
-    var html =
+    const html =
       '<div itemscope itemtype="http://schema.org/Person http://schema.org/Person">' +
       '  hello' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].type).toEqual([
@@ -69,23 +69,23 @@ describe('parser', () => {
   });
 
   test('finds an item within an element', () => {
-    var html =
+    const html =
       '<div>' +
       '  <div itemscope itemtype="http://schema.org/Person">hello</div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].type).toEqual(['http://schema.org/Person']);
   });
 
   test('finds multiple items within an element', () => {
-    var html =
+    const html =
       '<div>' +
       '  <div itemscope itemtype="http://schema.org/Person">hello</div>' +
       '  <div itemscope itemtype="http://schema.org/PostalAddress">hello</div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(2);
     expect(result.items[0].type).toEqual(['http://schema.org/Person']);
@@ -93,12 +93,12 @@ describe('parser', () => {
   });
 
   test('finds an item with properties', () => {
-    var html =
+    const html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="name">Jan</div>' +
       '  <div><div itemprop="age">29</div></div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].properties).toEqual({
@@ -108,7 +108,7 @@ describe('parser', () => {
   });
 
   test('finds an item with childitems', () => {
-    var html =
+    const html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="address1" itemscope itemtype="http://schema.org/PostalAddress">' +
       '    <div itemprop="street">street1</div>' +
@@ -117,7 +117,7 @@ describe('parser', () => {
       '    <div itemprop="street">street2</div>' +
       '  </div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
 
@@ -134,12 +134,12 @@ describe('parser', () => {
   });
 
   test('collates properties', () => {
-    var html =
+    const html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="name">Jan</div>' +
       '  <div itemprop="name">Potoms</div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].properties).toEqual({
@@ -148,22 +148,22 @@ describe('parser', () => {
   });
 
   test('handles empty propertynames', () => {
-    var html =
+    const html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="">Jan</div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].properties).toEqual({});
   });
 
   test('handles multiple propertynames', () => {
-    var html =
+    const html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="name additionalName">Jan</div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].properties).toEqual({
@@ -173,11 +173,11 @@ describe('parser', () => {
   });
 
   test('handles duplicated propertynames', () => {
-    var html =
+    const html =
       '<div itemscope itemtype="http://schema.org/Person">' +
       '  <div itemprop="  name  name ">Jan</div>' +
       '</div>';
-    var result = parser.toJson(html);
+    const result = parser.toJson(html);
     expect(Array.isArray(result.items)).toBe(true);
     expect(result.items.length).toBe(1);
     expect(result.items[0].properties).toEqual({
@@ -186,7 +186,7 @@ describe('parser', () => {
   });
 
   test('finds top level items that are props in non-strict mode', () => {
-    var html =
+    const html =
       '<div itemscope itemprop="someprop">' +
       '  <div itemprop="name">Jan</div>' +
       '  <div><div itemprop="age">29</div></div>' +
@@ -194,11 +194,11 @@ describe('parser', () => {
       '    <span itemprop="street">my street</span>' +
       '  </div>' +
       '</div>';
-    var nonStrictResult = parser.toJson(html);
+    const nonStrictResult = parser.toJson(html);
     expect(Array.isArray(nonStrictResult.items)).toBe(true);
     expect(nonStrictResult.items.length).toBe(1);
     expect(nonStrictResult.items[0].properties.name[0]).toBe('Jan');
-    var strictResult = parser.toJson(html, { strict: true });
+    const strictResult = parser.toJson(html, { strict: true });
     expect(Array.isArray(strictResult.items)).toBe(true);
     expect(strictResult.items.length).toBe(0);
   });
