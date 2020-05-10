@@ -37,24 +37,25 @@ function n3Totriples (triples, prefixes) {
   return result;
 }
 
-function ttlToJsonld (turtle, base, callback) {
-  var triples = [];
-  var parser = new n3.Parser({
-    baseIRI: base
-  });
-  parser.parse(turtle, function (error, triple, prefixes) {
-    if (error) {
-      return callback(error);
-    }
-    if (triple) {
-      triples.push(triple);
-    } else {
-      callback(null, rdfToJsonld(n3Totriples(triples, prefixes), {
-        useRdfType: true
-      }));
-    }
+async function ttlToJsonld (turtle, base) {
+  return new Promise((resolve, reject) => {
+    var triples = [];
+    var parser = new n3.Parser({
+      baseIRI: base
+    });
+    parser.parse(turtle, function (error, triple, prefixes) {
+      if (error) {
+        return reject(error);
+      }
+      if (triple) {
+        triples.push(triple);
+      } else {
+        resolve(rdfToJsonld(n3Totriples(triples, prefixes), {
+          useRdfType: true
+        }));
+      }
+    });
   });
 }
 
 module.exports = ttlToJsonld;
-

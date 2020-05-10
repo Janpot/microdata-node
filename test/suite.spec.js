@@ -12,33 +12,20 @@ var fs = require('fs');
 var path = require('path');
 var assert = require('chai').assert;
 
-function assertEqualRdf (jsonldExpected, jsonldGot, options, callback) {
+async function assertEqualRdf (jsonldExpected, jsonldGot, options) {
   var opts = {
     base: options.base,
     format: 'application/nquads'
   };
-  jsonld.normalize(jsonldExpected, opts, function (err, norm1) {
-    if (err) {
-      return callback(err);
-    }
-    jsonld.normalize(jsonldGot, opts, function (err, norm2) {
-      if (err) {
-        return callback(err);
-      }
-      try {
-        assert.deepEqual(norm1, norm2);
-        return callback();
-      } catch (e) {
-        return callback(e);
-      }
-    });
-  });
+  const norm1 = await jsonld.normalize(jsonldExpected, opts);
+  const norm2 = await jsonld.normalize(jsonldGot, opts);
+  assert.deepEqual(norm1, norm2);
 }
 
 function runOne (folderPath, it) {
   var manifest = JSON.parse(fs.readFileSync(folderPath + '/manifest.json'));
 
-  it(manifest.name + ': ' + manifest.comment, function (done) {
+  it(manifest.name + ': ' + manifest.comment, async () => {
     var htmlPath = folderPath + '/action.html';
     var html = fs.readFileSync(htmlPath);
     var base = BASE_URL + '/' + manifest.action;
@@ -48,19 +35,14 @@ function runOne (folderPath, it) {
       var jsonldGot = toJsonld(html, { base: base, registry: registry, useRdfType: true, strict: true });
       var ttl = fs.readFileSync(folderPath + '/result.ttl').toString();
 
-      ttlToJsonld(ttl, base, function (err, jsonldExpected) {
-        if (err) {
-          return done(err);
-        }
-        assertEqualRdf(jsonldExpected, jsonldGot, { base: base }, done);
-      });
+      const jsonldExpected = await ttlToJsonld(ttl, base);
+      await assertEqualRdf(jsonldExpected, jsonldGot, { base: base });
     } else if (manifest['@type'].indexOf('rdft:TestMicrodataNegativeSyntax') >= 0) {
       assert.throws(function () {
         toJsonld(html, { base: base, registry: registry, useRdfType: true, strict: true });
       });
-      done();
     } else {
-      done(new Error('unknown test type'));
+      throw new Error('unknown test type');
     }
   });
 }
