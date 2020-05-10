@@ -1,12 +1,9 @@
-/* global describe, it */
+/* eslint-env jest */
 
-'use strict';
-
-var assert = require('chai').assert;
 var parser = require('..');
 
-describe('itemref', function () {
-  it('parses itemrefs', function () {
+describe('itemref', () => {
+  test('parses itemrefs', () => {
     var html =
       '<div>' +
       '  <div id="ref1">' +
@@ -16,30 +13,30 @@ describe('itemref', function () {
       '  <div itemscope itemtype="http://schema.org/Person" itemref="ref1 ref2"></div>' +
       '</div>';
     var result = parser.toJson(html);
-    assert.isArray(result.items);
-    assert.lengthOf(result.items, 1);
-    assert.deepEqual(result.items[0].properties, {
+    expect(Array.isArray(result.items)).toBe(true);
+    expect(result.items.length).toBe(1);
+    expect(result.items[0].properties).toEqual({
       name: ['Jan', 'Potoms']
     });
   });
 
-  it('parses multiple items with the same ref', function () {
+  test('parses multiple items with the same ref', () => {
     var html =
       '<div id="ref" itemprop="name">Jan</div>' +
       '<div itemscope itemtype="http://schema.org/Person" itemref="ref"></div>' +
       '<div itemscope itemtype="http://schema.org/Person" itemref="ref"></div>';
     var result = parser.toJson(html);
-    assert.isArray(result.items);
-    assert.lengthOf(result.items, 2);
-    assert.deepEqual(result.items[0].properties, {
+    expect(Array.isArray(result.items)).toBe(true);
+    expect(result.items.length).toBe(2);
+    expect(result.items[0].properties).toEqual({
       name: ['Jan']
     });
-    assert.deepEqual(result.items[1].properties, {
+    expect(result.items[1].properties).toEqual({
       name: ['Jan']
     });
   });
 
-  it.skip('parses nested reffed items', function () {
+  test.skip('parses nested reffed items', function () {
     var html =
       '<div itemscope itemid="#item1">' +
       '  <div id="ref" itemprop="property1" itemscope itemid="#sub-item1"></div>' +
@@ -47,17 +44,17 @@ describe('itemref', function () {
       '  </div>' +
       '</div>';
     var result = parser.toJson(html);
-    assert.isArray(result.items);
-    assert.lengthOf(result.items, 1);
-    assert.deepPropertyVal(
-      result, '.items[0].properties.property1[0].id', '#sub-item1');
-    assert.deepPropertyVal(
-      result, '.items[0].properties.property2[0].id', '#sub-item2');
-    assert.deepPropertyVal(
-      result, '.items[0].properties.property2[0].properties.property1[0].id', '#sub-item1');
+    expect(Array.isArray(result.items)).toBe(true);
+    expect(result.items.length).toBe(1);
+    expect(result).toHaveProperty('.items[0].properties.property1[0].id', '#sub-item1');
+    expect(result).toHaveProperty('.items[0].properties.property2[0].id', '#sub-item2');
+    expect(result).toHaveProperty(
+      '.items[0].properties.property2[0].properties.property1[0].id',
+      '#sub-item1'
+    );
   });
 
-  it('handle top-level circular structure', function () {
+  test('handle top-level circular structure', () => {
     var html =
       '<div id="ref">' +
       '  <div itemscope itemref="ref">' +
@@ -65,14 +62,14 @@ describe('itemref', function () {
       '  </div>' +
       '</div>';
     var result = parser.toJson(html);
-    assert.isArray(result.items);
-    assert.lengthOf(result.items, 1);
-    assert.deepEqual(result.items[0].properties, {
+    expect(Array.isArray(result.items)).toBe(true);
+    expect(result.items.length).toBe(1);
+    expect(result.items[0].properties).toEqual({
       name: ['Jan']
     });
   });
 
-  it('handle nested item circular structure', function () {
+  test('handle nested item circular structure', () => {
     var html =
       '<div itemscope>' +
       '  <div id="ref">' +
@@ -84,9 +81,9 @@ describe('itemref', function () {
       '  </div>' +
       '</div>';
     var result = parser.toJson(html);
-    assert.isArray(result.items);
-    assert.lengthOf(result.items, 1);
-    assert.deepEqual(result.items[0].properties, {
+    expect(Array.isArray(result.items)).toBe(true);
+    expect(result.items.length).toBe(1);
+    expect(result.items[0].properties).toEqual({
       name: ['Jan'],
       friend: [{
         properties: {

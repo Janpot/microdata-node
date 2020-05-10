@@ -1,24 +1,21 @@
-/* global describe, it */
+/* eslint-env jest */
 
-'use strict';
-
-var assert = require('chai').assert;
 var parser = require('..');
 
-describe('itemprop', function () {
-  it('handles <meta> elements', function () {
+describe('itemprop', () => {
+  test('handles <meta> elements', () => {
     var html =
       '<div itemscope>' +
       '  <meta itemprop="metaProp" content="  value ">' +
       '  <meta itemprop="metaProp">' +
       '</div>';
     var result = parser.toJson(html);
-    assert.deepEqual(result.items[0].properties, {
+    expect(result.items[0].properties).toEqual({
       metaProp: ['  value ', '']
     });
   });
 
-  it('handles [src] elements', function () {
+  test('handles [src] elements', () => {
     var html =
       '<div itemscope>' +
       '  <audio itemprop="audioProp" src="./audio"></audio>' +
@@ -44,7 +41,7 @@ describe('itemprop', function () {
       '  <video itemprop="videoProp"></video>' +
       '</div>';
     var result = parser.toJson(html, { base: 'http://www.example.com' });
-    assert.deepEqual(result.items[0].properties, {
+    expect(result.items[0].properties).toEqual({
       audioProp: [
         'http://www.example.com/audio',
         'http://www.absolute.com/audio',
@@ -83,7 +80,7 @@ describe('itemprop', function () {
     });
   });
 
-  it('handles [src] elements with invalid base option', function () {
+  test('handles [src] elements with invalid base option', () => {
     var html =
       '<div itemscope>' +
       '  <audio itemprop="audioProp" src="./audio"></audio>' +
@@ -109,7 +106,7 @@ describe('itemprop', function () {
       '  <video itemprop="videoProp"></video>' +
       '</div>';
     var result = parser.toJson(html, { base: 'invalid url' });
-    assert.deepEqual(result.items[0].properties, {
+    expect(result.items[0].properties).toEqual({
       audioProp: [
         '',
         'http://www.absolute.com/audio',
@@ -148,7 +145,7 @@ describe('itemprop', function () {
     });
   });
 
-  it('handles [href] elements', function () {
+  test('handles [href] elements', () => {
     var html =
       '<div itemscope>' +
       '  <a itemprop="aProp" href="./a"></a>' +
@@ -162,7 +159,7 @@ describe('itemprop', function () {
       '  <area itemprop="areaProp"></area>' +
       '</div>';
     var result = parser.toJson(html, { base: 'http://www.example.com' });
-    assert.deepEqual(result.items[0].properties, {
+    expect(result.items[0].properties).toEqual({
       aProp: [
         'http://www.example.com/a',
         'http://www.absolute.com/a',
@@ -181,7 +178,7 @@ describe('itemprop', function () {
     });
   });
 
-  it('handles <object> elements', function () {
+  test('handles <object> elements', () => {
     var html =
       '<div itemscope>' +
       '  <object itemprop="objectProp" data="./object"></object>' +
@@ -189,7 +186,7 @@ describe('itemprop', function () {
       '  <object itemprop="objectProp"></object>' +
       '</div>';
     var result = parser.toJson(html, { base: 'http://www.example.com' });
-    assert.deepEqual(result.items[0].properties, {
+    expect(result.items[0].properties).toEqual({
       objectProp: [
         'http://www.example.com/object',
         'http://www.absolute.com/object',
@@ -198,7 +195,7 @@ describe('itemprop', function () {
     });
   });
 
-  it('handles [value] elements', function () {
+  test('handles [value] elements', () => {
     var html =
       '<div itemscope>' +
       '  <data itemprop="dataProp" value="  data-value "></data>' +
@@ -207,48 +204,48 @@ describe('itemprop', function () {
       '  <meter itemprop="meterProp"></meter>' +
       '</div>';
     var result = parser.toJson(html, { base: 'http://www.example.com' });
-    assert.deepEqual(result.items[0].properties, {
+    expect(result.items[0].properties).toEqual({
       dataProp: ['  data-value ', ''],
       meterProp: ['  meter-value ', '']
     });
   });
 
-  it('handles <time> elements', function () {
+  test('handles <time> elements', () => {
     var html =
       '<div itemscope>' +
       '  <time itemprop="timeProp" datetime="2014-01-01"></time>' +
       '  <time itemprop="timeProp"></time>' +
       '</div>';
     var result = parser.toJson(html, { base: 'http://www.example.com' });
-    assert.deepEqual(result.items[0].properties, {
+    expect(result.items[0].properties).toEqual({
       timeProp: ['2014-01-01', '']
     });
   });
 
-  it('handles text elements', function () {
+  test('handles text elements', () => {
     var html =
       '<div itemscope>' +
       '  <span itemprop="textProp">  Text value </span>' +
       '  <span itemprop="textProp">  </span>' +
       '</div>';
     var result = parser.toJson(html, { base: 'http://www.example.com' });
-    assert.deepEqual(result.items[0].properties, {
+    expect(result.items[0].properties).toEqual({
       textProp: ['  Text value ', '  ']
     });
   });
 
-  it('handles absolute urls when no base is set', function () {
+  test('handles absolute urls when no base is set', () => {
     var html =
       '<div itemscope>' +
       '  <a itemprop="property" href="http://www.example.com"></a>' +
       '</div>';
     var result = parser.toJson(html, { base: undefined });
-    assert.deepEqual(result.items[0].properties, {
+    expect(result.items[0].properties).toEqual({
       property: ['http://www.example.com']
     });
   });
 
-  it('handles base tag for url properties', function () {
+  test('handles base tag for url properties', () => {
     // should also ignore the first empty base tag!
     var html =
       '<!doctype html>' +
@@ -257,12 +254,12 @@ describe('itemprop', function () {
       '  <a itemprop="property" href="./relative"></a>' +
       '</body>';
     var result = parser.toJson(html, { base: 'http://www.example.com/' });
-    assert.deepEqual(result.items[0].properties, {
+    expect(result.items[0].properties).toEqual({
       property: ['http://www.example.com/base/relative']
     });
   });
 
-  it('handles malformed content attribs in non-strict mode', function () {
+  test('handles malformed content attribs in non-strict mode', () => {
     var html =
       '<div itemscope>' +
       '  <span itemprop="ratingValue" content="4.5" ></span>' +
@@ -270,13 +267,13 @@ describe('itemprop', function () {
       '</div>';
 
     var strictResult = parser.toJson(html, { strict: true });
-    assert.deepEqual(strictResult.items[0].properties, {
+    expect(strictResult.items[0].properties).toEqual({
       ratingValue: ['4.5'],
       reviewCount: ['3018']
     });
 
     var nonStrictResult = parser.toJson(html);
-    assert.deepEqual(nonStrictResult.items[0].properties, {
+    expect(nonStrictResult.items[0].properties).toEqual({
       ratingValue: ['4.5'],
       reviewCount: ['3018']
     });
