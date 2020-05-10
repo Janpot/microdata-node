@@ -96,7 +96,7 @@ parses the provided html to [jsonld](http://json-ld.org/)
 
 **options**
 
-`config.base`: **required** Base url to resolve url properties against.
+`config.base`: Base url to resolve url properties against.
 
 `config.registry`: The [registry](http://www.w3.org/TR/microdata-rdf/#dfn-registry) associates a URI prefix with one or more key-value pairs denoting processor behavior.
 
