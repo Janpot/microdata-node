@@ -1,6 +1,4 @@
-/* global describe, it */
-
-'use strict';
+/* eslint-env jest */
 
 var jsonld = require('jsonld');
 var ttlToJsonld = require('./ttlToJsonld');
@@ -10,7 +8,6 @@ var BASE_URL = 'http://w3c.github.io/microdata-rdf/tests';
 
 var fs = require('fs');
 var path = require('path');
-var assert = require('chai').assert;
 
 async function assertEqualRdf (jsonldExpected, jsonldGot, options) {
   var opts = {
@@ -19,13 +16,13 @@ async function assertEqualRdf (jsonldExpected, jsonldGot, options) {
   };
   const norm1 = await jsonld.normalize(jsonldExpected, opts);
   const norm2 = await jsonld.normalize(jsonldGot, opts);
-  assert.deepEqual(norm1, norm2);
+  expect(norm1).toEqual(norm2);
 }
 
-function runOne (folderPath, it) {
+function runOne (folderPath, test) {
   var manifest = JSON.parse(fs.readFileSync(folderPath + '/manifest.json'));
 
-  it(manifest.name + ': ' + manifest.comment, async () => {
+  test(manifest.name + ': ' + manifest.comment, async () => {
     var htmlPath = folderPath + '/action.html';
     var html = fs.readFileSync(htmlPath);
     var base = BASE_URL + '/' + manifest.action;
@@ -38,9 +35,9 @@ function runOne (folderPath, it) {
       const jsonldExpected = await ttlToJsonld(ttl, base);
       await assertEqualRdf(jsonldExpected, jsonldGot, { base: base });
     } else if (manifest['@type'].indexOf('rdft:TestMicrodataNegativeSyntax') >= 0) {
-      assert.throws(function () {
+      expect(function () {
         toJsonld(html, { base: base, registry: registry, useRdfType: true, strict: true });
-      });
+      }).toThrow();
     } else {
       throw new Error('unknown test type');
     }
@@ -50,18 +47,18 @@ function runOne (folderPath, it) {
 function runFolder (parent, only = [], skip = []) {
   fs.readdirSync(parent)
     .forEach(function (folderName) {
-      var itFn = it;
+      var testFn = test;
       if (only.includes(folderName)) {
-        itFn = it.only;
+        testFn = test.only;
       } else if (skip.includes(folderName)) {
-        itFn = it.skip;
+        testFn = test.skip;
       }
       var folder = path.resolve(parent, folderName);
-      runOne(folder, itFn);
+      runOne(folder, testFn);
     });
 }
 
-describe('suite', function () {
+describe('suite', () => {
   runFolder(
     path.resolve(__dirname, './w3c-tests'), [
       // 'Test 0001'
