@@ -1,20 +1,10 @@
 'use strict';
 
 var Item = require('./Item');
-var unique = require('array-unique');
 var isAbsoluteUrl = require('is-absolute-url');
 var util = require('util');
 var { tryResolve } = require('./urls');
-
-// splits a string on whitespaces and removes duplicate values
-function splitUnique (string) {
-  string = string && string.trim();
-  if (string) {
-    return unique(string.split(/\s+/));
-  } else {
-    return undefined;
-  }
-}
+var { splitUnique } = require('./strings');
 
 function parse ($, $nodes, config) {
   config = config || {};

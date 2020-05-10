@@ -1,7 +1,7 @@
 'use strict';
 
 var DOM = require('domutils');
-var unique = require('array-unique');
+var { splitUnique } = require('./strings');
 var isAbsoluteUrl = require('is-absolute-url');
 var constants = require('./constants');
 var { tryResolve } = require('./urls');
@@ -14,10 +14,6 @@ var XSD__DATE_TIME = constants.XSD__DATE_TIME;
 var XSD__G_YEAR_MONTH = constants.XSD__G_YEAR_MONTH;
 var XSD__G_YEAR = constants.XSD__G_YEAR;
 var XSD__DURATION = constants.XSD__DURATION;
-
-function splitUnique (string) {
-  return unique(string.trim().split(/\s+/));
-}
 
 function walk (nodes, visit) {
   nodes.forEach(function (node) {

@@ -34,7 +34,6 @@
     "snazzy": "^8.0.0"
   },
   "dependencies": {
-    "array-unique": "^0.3.2",
     "domutils": "^2.1.0",
     "es6-map": "^0.1.1",
     "extend": "^3.0.1",
