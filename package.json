@@ -27,19 +27,19 @@
   "homepage": "https://github.com/Janpot/microdata-node",
   "devDependencies": {
     "chai": "^4.1.2",
-    "jsonld": "^0.4.12",
+    "jsonld": "^3.1.0",
     "mocha": "^7.1.2",
-    "n3": "^0.11.2",
+    "n3": "^1.3.6",
     "request": "^2.51.0",
     "semistandard": "^14.2.0",
     "snazzy": "^8.0.0"
   },
   "dependencies": {
     "array-unique": "^0.3.2",
-    "domutils": "^1.5.1",
+    "domutils": "^2.1.0",
     "es6-map": "^0.1.1",
     "extend": "^3.0.1",
-    "htmlparser2": "^3.8.2",
-    "is-absolute-url": "^2.1.0"
+    "htmlparser2": "^4.1.0",
+    "is-absolute-url": "^3.0.3"
   }
 }
