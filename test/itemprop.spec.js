@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-var parser = require('..');
+var parser = require('../src');
 
 describe('itemprop', () => {
   test('handles <meta> elements', () => {

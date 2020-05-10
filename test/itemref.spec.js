@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-var parser = require('..');
+var parser = require('../src');
 
 describe('itemref', () => {
   test('parses itemrefs', () => {

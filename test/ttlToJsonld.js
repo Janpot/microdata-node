@@ -1,6 +1,6 @@
 'use strict';
 
-var rdfToJsonld = require('../lib/rdfToJsonld');
+var rdfToJsonld = require('../src/rdfToJsonld');
 var n3 = require('n3');
 
 function expandPrefixedName (name, prefixes) {

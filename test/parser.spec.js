@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-var parser = require('..');
+var parser = require('../src');
 
 describe('parser', () => {
   test('finds no data when none defined', () => {
