@@ -1,4 +1,3 @@
-
 'use strict';
 
 var rdfToJsonld = require('../lib/rdfToJsonld');
@@ -16,31 +15,32 @@ function n3Totriples (triples, prefixes) {
   function toTripleObject (n3Object) {
     var object = {};
     if (n3.Util.isLiteral(n3Object)) {
-      object.value = n3.Util.getLiteralValue(n3Object);
-      object.type = n3.Util.getLiteralType(n3Object);
+      object.value = n3Object.value;
+      object.type = n3Object.datatype.id;
     } else {
-      if (n3.Util.isIRI(n3Object)) {
-        object.id = expandPrefixedName(n3Object, prefixes);
+      if (n3.Util.isNamedNode(n3Object)) {
+        object.id = expandPrefixedName(n3Object.id, prefixes);
       } else {
-        object.id = n3Object;
+        object.id = n3Object.id;
       }
     }
     return object;
   }
-  return triples
+  const result = triples
     .map(function (triple) {
       return {
-        subject: triple.subject,
-        predicate: triple.predicate,
+        subject: triple.subject.id,
+        predicate: triple.predicate.id,
         object: toTripleObject(triple.object)
       };
     });
+  return result;
 }
 
 function ttlToJsonld (turtle, base, callback) {
   var triples = [];
-  var parser = n3.Parser({
-    documentIRI: base
+  var parser = new n3.Parser({
+    baseIRI: base
   });
   parser.parse(turtle, function (error, triple, prefixes) {
     if (error) {
@@ -57,3 +57,4 @@ function ttlToJsonld (turtle, base, callback) {
 }
 
 module.exports = ttlToJsonld;
+
