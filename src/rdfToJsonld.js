@@ -155,7 +155,7 @@ function rdfToJsonld (triples, config) {
     }
   }
 
-  for (const [name, graph] of Object.entries(graphMap)) {
+  for (const graph of Object.values(graphMap)) {
     const nil = graph[RDF__NIL];
     if (!nil) {
       continue;
