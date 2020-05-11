@@ -1,5 +1,3 @@
-'use strict';
-
 const {
   RDF__TYPE,
   RDF__NIL,
@@ -11,16 +9,45 @@ const {
   XSD__BOOLEAN,
   XSD__STRING
 } = require('./constants');
+const { isNamedNode } = require('./microdataToRdf');
 
+/**
+ * @typedef {{
+ *   node: JsonldNode
+ *   property: string
+ *   value: JsonldValue
+ * }} Usage
+ * @typedef {{
+ *   '@id': string
+ *   '@value'?: string | number | boolean
+ *   '@language'?: string
+ *   '@type'?: string | string[]
+ *   '@list'?: JsonldValue[]
+ * }} JsonldValue
+ * @typedef {{
+ *   '@id': string
+ *   '@type'?: string | string[]
+ *   '@graph'?: JsonldGraph[]
+ *   usages?: Usage[]
+ *   [prop: string]: unknown
+ * }} JsonldNode
+ * @typedef {{
+ *   [key: string]: JsonldNode
+ * }} JsonldGraph
+ */
+
+/**
+ * @param {any} objA
+ * @param {any} objB
+ * @returns {boolean}
+ */
 function equivalentObjects (objA, objB) {
   const keysA = Object.keys(objA);
   const keysB = Object.keys(objB);
   if (keysA.length !== keysB.length) {
     return false;
   }
-  const sameKeys = keysA.every(function (key) {
-    return keysB.indexOf(key) >= 0;
-  });
+  const sameKeys = keysA.every((key) => keysB.includes(key));
   if (!sameKeys) {
     return false;
   }
@@ -30,12 +57,19 @@ function equivalentObjects (objA, objB) {
   return sameValues;
 }
 
-function rdfObjectToJsonldObject (object, useNativeTypes) {
-  if (object.id) {
+/**
+ * @param {import('./microdataToRdf').Object} object
+ * @param {boolean} useNativeTypes
+ * @returns {JsonldValue}
+ */
+function rdfObjectToJsonldValue (object, useNativeTypes) {
+  if (isNamedNode(object)) {
     return { '@id': object.id };
   }
   const value = object.value.toString();
+  /** @type {JsonldValue} */
   const result = {};
+  /** @type {string | number | boolean} */
   let convertedValue = value;
   let type = null;
   if (useNativeTypes && object.type === XSD__BOOLEAN) {
@@ -63,14 +97,26 @@ function rdfObjectToJsonldObject (object, useNativeTypes) {
   return result;
 }
 
+/**
+ * @typedef {JsonldNode & {
+ *   '@type'?: [RDF__LIST]
+ *   usages: [Usage]
+ *   [RDF__FIRST]: [JsonldValue]
+ *   [RDF__REST]: [JsonldValue]
+ * }} ValidListNode
+ * @param {JsonldNode} node
+ * @returns {node is ValidListNode}
+ */
 function isWellFormedListNode (node) {
   if (!node.usages || node.usages.length !== 1) {
     return false;
   }
-  if (!node[RDF__FIRST] || node[RDF__FIRST].length !== 1) {
+  const first = /** @type {JsonldValue[] | undefined} */(node[RDF__FIRST]);
+  if (!first || first.length !== 1) {
     return false;
   }
-  if (!node[RDF__REST] || node[RDF__REST].length !== 1) {
+  const rest = /** @type {JsonldValue[] | undefined} */(node[RDF__REST]);
+  if (!rest || rest.length !== 1) {
     return false;
   }
   if (node['@type'] && (node['@type'].length !== 1 || node['@type'][0] !== RDF__LIST)) {
@@ -79,22 +125,31 @@ function isWellFormedListNode (node) {
   return true;
 }
 
+/**
+ * @param {import('./microdataToRdf').Triple[]} triples
+ */
 function getGraphs (triples) {
   return triples.reduce(function (graphs, triple) {
     const name = triple.graph || '';
     graphs[name] = graphs[name] || [];
     graphs[name].push(triple);
     return graphs;
-  }, {});
+  }, /** @type {{ [name: string]: import('./microdataToRdf').Triple[] }} */({}));
 }
 
-// http://www.w3.org/TR/json-ld-api/#serialize-rdf-as-json-ld-algorithm
+/**
+ * http://www.w3.org/TR/json-ld-api/#serialize-rdf-as-json-ld-algorithm
+ * @param {import('./microdataToRdf').Triple[]} triples
+ * @param {import('./index').Config} config
+ */
 function rdfToJsonld (triples, config) {
   const useRdfType = config.useRdfType;
   const useNativeTypes = config.useNativeTypes;
 
   const graphs = getGraphs(triples);
+  /** @type {JsonldGraph} */
   const defaultGraph = {};
+  /** @type {{ [id: string]: JsonldGraph }} */
   const graphMap = {
     '@default': defaultGraph
   };
@@ -117,32 +172,33 @@ function rdfToJsonld (triples, config) {
       }
       const node = nodeMap[triple.subject];
       const object = triple.object;
-      if (object.id) {
+      if (isNamedNode(object)) {
         if (!nodeMap[object.id]) {
           nodeMap[object.id] = {
             '@id': object.id
           };
         }
       }
-      if (triple.predicate === RDF__TYPE && !useRdfType && object.id) {
+      if (triple.predicate === RDF__TYPE && !useRdfType && isNamedNode(object)) {
         if (!node['@type']) {
           node['@type'] = [object.id];
         }
         continue;
       }
 
-      const value = rdfObjectToJsonldObject(object, useNativeTypes);
+      const value = rdfObjectToJsonldValue(object, useNativeTypes);
       if (!node[triple.predicate]) {
         node[triple.predicate] = [];
       }
-      const alreadyExists = node[triple.predicate].some(function (existingValue) {
+      const existingValues = /** @type {JsonldValue[]} */(node[triple.predicate]);
+      const alreadyExists = existingValues.some((existingValue) => {
         const areEquivalent = equivalentObjects(value, existingValue);
         return areEquivalent;
       });
       if (!alreadyExists) {
-        node[triple.predicate].push(value);
+        existingValues.push(value);
       }
-      if (object.id) {
+      if (isNamedNode(object)) {
         if (!node.usages) {
           node.usages = [];
         }
@@ -160,11 +216,15 @@ function rdfToJsonld (triples, config) {
     if (!nil) {
       continue;
     }
-    for (const usage of nil.usages) {
-      let node = usage.node;
-      let property = usage.property;
-      let head = usage.value;
+    const { usages } = nil;
+    if (!usages) {
+      continue;
+    }
+    for (const usage of usages) {
+      let { node, property, value: head } = usage;
+      /** @type {JsonldValue[]} */
       const list = [];
+      /** @type {string[]} */
       const listNodes = [];
 
       while (property === RDF__REST && isWellFormedListNode(node)) {
@@ -185,6 +245,7 @@ function rdfToJsonld (triples, config) {
         }
         const headId = head['@id'];
         head = graph[headId];
+        // @ts-ignore
         head = head[RDF__REST][0];
         list.pop();
         listNodes.pop();
@@ -199,20 +260,23 @@ function rdfToJsonld (triples, config) {
     }
   }
 
+  /** @type {JsonldNode[]} */
   const result = [];
   Object.keys(defaultGraph)
     .sort()
-    .forEach(function (subject) {
+    .forEach((subject) => {
       const node = defaultGraph[subject];
       if (graphMap[subject]) {
-        node['@graph'] = [];
+        /** @type {JsonldGraph[]} */
+        const graph = [];
+        node['@graph'] = graph;
         for (const s of Object.keys(graphMap[subject]).sort()) {
           const n = graphMap[s];
           delete n.usages;
           if (Object.keys(n).length === 1 && n['@id']) {
             continue;
           }
-          node['@graph'].push(n);
+          graph.push(n);
         }
       }
 
@@ -221,6 +285,7 @@ function rdfToJsonld (triples, config) {
         return 'continue';
       }
       result.push(node);
+      return '';
     });
 
   return result;

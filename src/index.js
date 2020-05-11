@@ -1,32 +1,61 @@
-'use strict';
-
 const microdataToRdf = require('./microdataToRdf');
 const rdfToJsonld = require('./rdfToJsonld');
 const rdfToJson = require('./rdfToJson');
 
+/**
+ * @typedef {{ subPropertyOf?: string, equivalentProperty?: string }} VocabularyProperty
+ * @typedef {{ properties?: { [name: string]: VocabularyProperty } }} Vocabulary
+ * @typedef {{ [id: string]: Vocabulary }} Registry
+ * @typedef {{
+ *   base: string
+ *   registry: Registry
+ *   strict: boolean
+ *   useRdfType: boolean
+ *   useNativeTypes: boolean
+ * }} Config
+ */
+
+/**
+  * @param {string} url
+  * @returns {string}
+  */
 function removeHashFragment (url) {
   return url.replace(/#[^#/?]$/, '');
 }
 
-function normalizeConfig (config) {
-  config = {
-    base: '',
-    registry: {},
-    strict: false,
-    useRdfType: false,
-    useNativeTypes: true,
-    ...config
+/**
+ * @param {Config} config
+ * @returns {Config}
+ */
+function normalizeConfig ({
+  base = '',
+  registry = /** @type {Registry} */({}),
+  strict = false,
+  useRdfType = false,
+  useNativeTypes = true
+} = /** @type {Partial<Config>} */({})) {
+  return {
+    base: removeHashFragment(base || ''),
+    registry,
+    strict,
+    useRdfType,
+    useNativeTypes
   };
-
-  config.base = removeHashFragment(config.base || '');
-  return config;
 }
 
+/**
+ * @param {string} microdataHtml
+ * @param {Config} config
+ */
 function toJsonld (microdataHtml, config) {
   config = normalizeConfig(config);
   return rdfToJsonld(microdataToRdf(microdataHtml, config), config);
 }
 
+/**
+ * @param {string} microdataHtml
+ * @param {Config} config
+ */
 function toJson (microdataHtml, config) {
   config = normalizeConfig(config);
   return rdfToJson(microdataToRdf(microdataHtml, config), config);
