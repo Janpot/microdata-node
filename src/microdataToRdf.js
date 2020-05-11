@@ -1,13 +1,28 @@
-'use strict';
-
 const htmlparser = require('htmlparser2');
 const isAbsoluteUrl = require('is-absolute-url');
 const microdataDom = require('./microdataDom');
 const constants = require('./constants');
 
-function microdataToRdf (html, config) {
-  config = config || {};
+/**
+ * @typedef {{ id: string }} NamedNode
+ * @typedef {{ id?: undefined, value: string | number | boolean, type?: string, language?: string }} LiteralNode
+ * @typedef {NamedNode | LiteralNode} Object
+ * @typedef {{ subject: string, predicate: string, object: Object, graph?: string }} Triple
+ *
+ * @typedef {{
+ *   currentVocab: string | null
+ *   currentType: string | null
+ *   ancestors: import('./microdataDom').Item[]
+ *   memory: Map<import('./microdataDom').Item, string>
+ * }} Context
+ */
 
+/**
+ * @param {string} html
+ * @param {import('./index').Config} config
+ * @returns {Triple[]}
+ */
+function microdataToRdf (html, config) {
   const registry = config.registry;
 
   const dom = microdataDom(htmlparser.parseDOM(html, {
@@ -16,33 +31,57 @@ function microdataToRdf (html, config) {
 
   let nextId = 0;
 
+  /**
+   * @returns {string}
+   */
   function generateBlankNode () {
     const blank = '_:' + nextId;
     nextId += 1;
     return blank;
   }
 
+  /**
+   * @param {string | null} type
+   * @returns {string | null}
+   */
   function getVocab (type) {
-    if (!type) return null;
-    const registryVocab = Object.keys(registry).filter((prefix) => {
-      const typePrefix = type.substr(0, prefix.length);
-      return prefix === typePrefix;
-    })[0] || null;
-
+    if (!type) {
+      return null;
+    }
+    const registryVocab = Object.keys(registry).find((prefix) => type.startsWith(prefix));
     return registryVocab || type.replace(/[^#/]*$/, '');
   }
 
+  /**
+   * @param {string} name
+   * @param {Context} ctx
+   * @returns {string}
+   */
   function generatePredicateUri (name, ctx) {
-    if (isAbsoluteUrl(name)) return name;
+    if (isAbsoluteUrl(name)) {
+      return name;
+    }
     const fragment = encodeURIComponent(name);
-    if (!ctx.currentType) return config.base + '#' + fragment;
-    if (/[#/]$/.test(ctx.currentVocab)) return ctx.currentVocab + fragment;
+    if (!ctx.currentType) {
+      return config.base + '#' + fragment;
+    }
+    if (ctx.currentVocab && /[#/]$/.test(ctx.currentVocab)) {
+      return ctx.currentVocab + fragment;
+    }
     return ctx.currentVocab + '#' + fragment;
   }
 
-  const triples = [];
+  const triples = /** @type {Triple[]} */([]);
 
+  /**
+   * @param {string} name
+   * @param {Context} ctx
+   * @returns {string[]}
+   */
   function getEquivalents (name, ctx) {
+    if (!ctx.currentVocab) {
+      return [];
+    }
     if (!registry[ctx.currentVocab]) {
       return [];
     }
@@ -54,7 +93,7 @@ function microdataToRdf (html, config) {
     if (!property) {
       return [];
     }
-    let result = [];
+    let result = /** @type {string[]} */([]);
     if (property.subPropertyOf) {
       result = result.concat(property.subPropertyOf);
     }
@@ -64,6 +103,11 @@ function microdataToRdf (html, config) {
     return result;
   }
 
+  /**
+   * @param {import('./microdataDom').Item} item
+   * @param {Context} ctx
+   * @returns {string}
+   */
   function generateTriples (item, ctx) {
     const subject = ctx.memory.get(item) || dom.getItemId(item) || generateBlankNode();
     ctx.memory.set(item, subject);
@@ -76,7 +120,7 @@ function microdataToRdf (html, config) {
       }
     }
 
-    const itemTypes = dom.getItemType(item, ctx);
+    const itemTypes = dom.getItemType(item);
     for (const itemType of itemTypes) {
       triples.push({
         subject: subject,
@@ -99,14 +143,15 @@ function microdataToRdf (html, config) {
     for (const element of dom.getProperties(item)) {
       for (const name of dom.getPropertyNames(element)) {
         const predicate = generatePredicateUri(name, newCtx);
+        /** @type {Object | null} */
         let value = null;
         if (dom.isItem(element)) {
           value = { id: generateTriples(element, newCtx) };
         } else {
-          value = dom.getItemValue(element);
+          value = /** @type {Object | null} */(dom.getItemValue(element));
         }
 
-        if (value === null) return 'continue';
+        if (value === null) continue;
 
         triples.push({
           subject: subject,
@@ -141,4 +186,22 @@ function microdataToRdf (html, config) {
   return triples;
 }
 
+/**
+ * @param {Object} node
+ * @returns {node is NamedNode}
+ */
+function isNamedNode (node) {
+  return node.id !== undefined;
+}
+
+/**
+ * @param {Object} node
+ * @returns {node is LiteralNode}
+ */
+function isLiteralNode (node) {
+  return node.id === undefined;
+}
+
 module.exports = microdataToRdf;
+module.exports.isNamedNode = isNamedNode;
+module.exports.isLiteralNode = isLiteralNode;

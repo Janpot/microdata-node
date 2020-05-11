@@ -1,5 +1,3 @@
-'use strict';
-
 const DOM = require('domutils');
 const { splitUnique } = require('./strings');
 const isAbsoluteUrl = require('is-absolute-url');
@@ -15,18 +13,36 @@ const {
   XSD__DURATION
 } = require('./constants');
 
+/**
+ * @typedef {import('domhandler').Node} Node
+ * @typedef {import('domhandler').Node[]} Dom
+ * @typedef {import('domhandler').Element} Item
+ * @typedef {import('./microdataToRdf').Object} ItemValue
+ */
+
+/**
+ * @param {Node[]} nodes
+ * @param {(node: Node) => void} visit
+ */
 function walk (nodes, visit) {
   for (const node of nodes) {
     visit(node);
-    if (node.children) {
-      walk(node.children, visit);
+    const children = DOM.getChildren(node);
+    if (children) {
+      walk(children, visit);
     }
   }
 }
 
+/**
+ * @param {Dom} dom
+ */
 function mapIds (dom) {
-  const idMap = {};
+  const idMap = /** @type {{ [id: string]: Node }} */({});
   walk(dom, (node) => {
+    if (!DOM.isTag(node)) {
+      return;
+    }
     const id = DOM.getAttributeValue(node, 'id');
     if (id && !idMap[id]) {
       idMap[id] = node;
@@ -35,12 +51,14 @@ function mapIds (dom) {
   return idMap;
 }
 
-module.exports = function (dom, config) {
-  config = config || {};
-
+/**
+ * @param {Dom} dom
+ * @param {import('./index').Config} config
+ */
+function microdataDom (dom, config) {
   // resolve the base url of the document
   let base = config.base || '';
-  const baseElem = DOM.findOne(function (elem) {
+  const baseElem = DOM.findOne((elem) => {
     return elem.name === 'base' && DOM.hasAttrib(elem, 'href');
   }, dom);
 
@@ -52,19 +70,22 @@ module.exports = function (dom, config) {
 
   const idMap = mapIds(dom);
 
+  /**
+   * @param {Node[]} nodes
+   * @param {boolean} isTopLevel
+   * @returns {Item[]}
+   */
   function _getItems (nodes, isTopLevel) {
-    let items = [];
+    let items = /** @type {Item[]} */([]);
     for (const node of nodes) {
       let childIsTopLEvel = isTopLevel;
-      const isStrictItem = isItem(node) && !isProperty(node);
-      const isNonStrictItem = isItem(node) && isTopLevel;
-      const isAnItem = isStrictItem || (!strict && isNonStrictItem);
-      if (isAnItem) {
+      if (isItem(node) && (!isProperty(node) || (!strict && isTopLevel))) {
         childIsTopLEvel = false;
         items.push(node);
       }
-      if (node.children) {
-        const childItems = _getItems(node.children, childIsTopLEvel);
+      const children = DOM.getChildren(node);
+      if (children) {
+        const childItems = _getItems(children, childIsTopLEvel);
         items = items.concat(childItems);
       }
     }
@@ -75,31 +96,35 @@ module.exports = function (dom, config) {
     return _getItems(dom, true);
   }
 
+  /**
+   * @param {Item} root
+   */
   function getProperties (root) {
     const results = [];
-    const memory = [];
-    let pending = [];
+    const memory = /** @type {Node[]} */([]);
+    let pending = /** @type {Node[]} */([]);
 
     memory.push(root);
 
-    if (root.children) {
-      pending = pending.concat(root.children);
+    const children = DOM.getChildren(root);
+    if (children) {
+      pending = pending.concat(children);
     }
 
-    if (root.attribs.itemref) {
-      for (const id of splitUnique(root.attribs.itemref)) {
-        if (idMap[id]) {
-          pending.push(idMap[id]);
-        }
+    const itemrefs = splitUnique(DOM.getAttributeValue(root, 'itemref'));
+    for (const id of itemrefs) {
+      if (idMap[id]) {
+        pending.push(idMap[id]);
       }
     }
 
     let current = pending.shift();
     while (current) {
-      if (memory.indexOf(current) < 0) {
+      if (!memory.includes(current)) {
         memory.push(current);
-        if (current.children && !isItem(current)) {
-          pending = pending.concat(current.children);
+        const children = DOM.getChildren(current);
+        if (children && !isItem(current)) {
+          pending = pending.concat(children);
         }
         const props = getPropertyNames(current);
         if (props.length > 0) {
@@ -120,14 +145,26 @@ module.exports = function (dom, config) {
     return results;
   }
 
+  /**
+   * @param {Node} element
+   * @returns {element is Item}
+   */
   function isItem (element) {
-    return DOM.hasAttrib(element, 'itemscope');
+    return DOM.isTag(element) && DOM.hasAttrib(element, 'itemscope');
   }
 
+  /**
+   * @param {Node} element
+   * @returns {boolean}
+   */
   function isProperty (element) {
-    return DOM.hasAttrib(element, 'itemprop');
+    return DOM.isTag(element) && DOM.hasAttrib(element, 'itemprop');
   }
 
+  /**
+   * @param {Item} item
+   * @returns {string | null}
+   */
   function getItemId (item) {
     let id = DOM.getAttributeValue(item, 'itemid');
     if (id) {
@@ -141,6 +178,10 @@ module.exports = function (dom, config) {
     return null;
   }
 
+  /**
+   * @param {Item} item
+   * @returns {string[]}
+   */
   function getItemType (item) {
     const itemType = DOM.getAttributeValue(item, 'itemtype');
     const types = (itemType ? splitUnique(itemType) : [])
@@ -148,18 +189,38 @@ module.exports = function (dom, config) {
     return types;
   }
 
+  /**
+   * @param {Node} element
+   * @returns {string[]}
+   */
   function getPropertyNames (element) {
+    if (!DOM.isTag(element)) {
+      return [];
+    }
     const itemProp = DOM.getAttributeValue(element, 'itemprop');
     return itemProp ? splitUnique(itemProp) : [];
   }
 
   const srcProperty = ['audio', 'embed', 'iframe', 'img', 'source', 'track', 'video'];
   const hrefProperty = ['a', 'area', 'link'];
-  function isName (element, names) {
+
+  /**
+   * @param {Node} element
+   * @param {string[]} names
+   * @returns {boolean}
+   */
+  function isOneOfTags (element, names) {
+    if (!DOM.isTag(element)) {
+      return false;
+    }
     const tagname = DOM.getName(element);
     return names.indexOf(tagname) >= 0;
   }
 
+  /**
+   * @param {string} value
+   * @returns {ItemValue}
+   */
   function resolveUrlProperty (value) {
     if (value && isAbsoluteUrl(value)) {
       return { id: value };
@@ -172,27 +233,38 @@ module.exports = function (dom, config) {
     }
   }
 
+  /**
+   * @param {string} value
+   * @returns {ItemValue}
+   */
   function resolveProperty (value) {
     return { value: value || '' };
   }
 
+  /**
+   * @param {string} value
+   * @returns {ItemValue}
+   */
   function resolveNumberProperty (value) {
     const number = Number(value);
     if (isNaN(number)) {
       return { value: value || '' };
     }
-    const isInt = number === parseInt(number, 10);
     return {
       value: number,
-      type: isInt ? XSD__INTEGER : XSD__DOUBLE
+      type: Number.isInteger(number) ? XSD__INTEGER : XSD__DOUBLE
     };
   }
 
+  /**
+   * @param {string} value
+   * @returns {ItemValue}
+   */
   function resolveDateProperty (value) {
     value = value || '';
-    const result = {
+    const result = /** @type {import('./microdataToRdf').LiteralNode} */({
       value: value
-    };
+    });
     if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
       result.type = XSD__DATE;
     } else if (/^\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:[AZ]|[+-]\d{2}(?::\d{2})?)?$/.test(value)) {
@@ -209,6 +281,10 @@ module.exports = function (dom, config) {
     return result;
   }
 
+  /**
+   * @param {Node} element
+   * @returns {ItemValue | Item | null}
+   */
   function getItemValue (element) {
     if (!isProperty(element)) {
       return null;
@@ -216,23 +292,25 @@ module.exports = function (dom, config) {
     if (isItem(element)) {
       return element;
     }
-    if (DOM.hasAttrib(element, 'content')) {
-      return resolveProperty(DOM.getAttributeValue(element, 'content'));
-    }
-    if (isName(element, srcProperty)) {
-      return resolveUrlProperty(DOM.getAttributeValue(element, 'src'));
-    }
-    if (isName(element, hrefProperty)) {
-      return resolveUrlProperty(DOM.getAttributeValue(element, 'href'));
-    }
-    if (isName(element, ['object'])) {
-      return resolveUrlProperty(DOM.getAttributeValue(element, 'data'));
-    }
-    if (isName(element, ['data', 'meter'])) {
-      return resolveNumberProperty(DOM.getAttributeValue(element, 'value'));
-    }
-    if (isName(element, ['time'])) {
-      return resolveDateProperty(DOM.getAttributeValue(element, 'datetime'));
+    if (DOM.isTag(element)) {
+      if (DOM.hasAttrib(element, 'content')) {
+        return resolveProperty(DOM.getAttributeValue(element, 'content'));
+      }
+      if (isOneOfTags(element, srcProperty)) {
+        return resolveUrlProperty(DOM.getAttributeValue(element, 'src'));
+      }
+      if (isOneOfTags(element, hrefProperty)) {
+        return resolveUrlProperty(DOM.getAttributeValue(element, 'href'));
+      }
+      if (isOneOfTags(element, ['object'])) {
+        return resolveUrlProperty(DOM.getAttributeValue(element, 'data'));
+      }
+      if (isOneOfTags(element, ['data', 'meter'])) {
+        return resolveNumberProperty(DOM.getAttributeValue(element, 'value'));
+      }
+      if (isOneOfTags(element, ['time'])) {
+        return resolveDateProperty(DOM.getAttributeValue(element, 'datetime'));
+      }
     }
     const value = DOM.getText(element);
     if (value || strict) {
@@ -243,13 +321,15 @@ module.exports = function (dom, config) {
   }
 
   return {
-    getItems: getItems,
-    getProperties: getProperties,
-    getItemValue: getItemValue,
-    getItemId: getItemId,
-    getItemType: getItemType,
-    getPropertyNames: getPropertyNames,
-    isItem: isItem,
-    isProperty: isProperty
+    getItems,
+    getProperties,
+    getItemValue,
+    getItemId,
+    getItemType,
+    getPropertyNames,
+    isItem,
+    isProperty
   };
-};
+}
+
+module.exports = microdataDom;

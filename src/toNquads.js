@@ -1,7 +1,10 @@
-'use strict';
-
 const util = require('util');
+const { isNamedNode, isLiteralNode } = require('./microdataToRdf');
 
+/**
+ * @param {string} id
+ * @returns {string}
+ */
 function formatId (id) {
   if (/^_:/.test(id)) {
     return id;
@@ -9,11 +12,15 @@ function formatId (id) {
   return util.format('<%s>', id);
 }
 
+/**
+ * @param {import('./microdataToRdf').Object} object
+ * @returns {string}
+ */
 function formatValue (object) {
-  if (object.id) {
+  if (isNamedNode(object)) {
     return formatId(object.id);
   }
-  if (object.value) {
+  if (isLiteralNode(object)) {
     const value = String(object.value)
       .replace(/"/gm, '\\"')
       .replace(/\n/gm, '\\n');
@@ -25,6 +32,10 @@ function formatValue (object) {
   return '""';
 }
 
+/**
+ * @param {import('./microdataToRdf').Triple} triple
+ * @returns {string}
+ */
 function tripleToNquad (triple) {
   return util.format('%s %s %s.',
     formatId(triple.subject),
@@ -33,6 +44,10 @@ function tripleToNquad (triple) {
   );
 }
 
+/**
+ * @param {import('./microdataToRdf').Triple[]} triples
+ * @returns {string}
+ */
 function toNquads (triples) {
   return triples
     .map(tripleToNquad)
