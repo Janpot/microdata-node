@@ -202,4 +202,17 @@ describe('parser', () => {
     expect(Array.isArray(strictResult.items)).toBe(true);
     expect(strictResult.items.length).toBe(0);
   });
+
+  test('recognizes self-closing tags', () => {
+    const html =
+      '<div itemscope>' +
+      '  <span itemprop="price" content="139.90" />' +
+      '  foo' +
+      '  bar' +
+      '</div>';
+    const result = parser.toJson(html);
+    expect(Array.isArray(result.items)).toBe(true);
+    expect(result.items.length).toBe(1);
+    expect(result.items[0].properties.price[0]).toBe('139.90');
+  });
 });
