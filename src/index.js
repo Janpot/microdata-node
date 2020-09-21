@@ -66,7 +66,7 @@ function toJson (microdataHtml, config) {
  * @param {string} microdataHtml
  * @param {Config} config
  */
-function toRdf(microdataHtml, config){
+function toRdf (microdataHtml, config) {
   config = normalizeConfig(config);
   return toNquads(microdataToRdf(microdataHtml, config));
 }
