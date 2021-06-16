@@ -16,7 +16,7 @@ async function assertEqualRdf (jsonldExpected, jsonldGot, options) {
   };
   const norm1 = await jsonld.normalize(jsonldExpected, opts);
   const norm2 = await jsonld.normalize(jsonldGot, opts);
-  expect(norm1).toEqual(norm2);
+  expect(norm2).toEqual(norm1);
 }
 
 function runOne (folderPath, test) {
