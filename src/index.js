@@ -1,6 +1,7 @@
 const microdataToRdf = require('./microdataToRdf');
 const rdfToJsonld = require('./rdfToJsonld');
 const rdfToJson = require('./rdfToJson');
+const toNquads = require('./toNquads');
 
 /**
  * @typedef {{ subPropertyOf?: string, equivalentProperty?: string }} VocabularyProperty
@@ -61,5 +62,15 @@ function toJson (microdataHtml, config) {
   return rdfToJson(microdataToRdf(microdataHtml, config), config);
 }
 
+/**
+ * @param {string} microdataHtml
+ * @param {Config} config
+ */
+function toRdf (microdataHtml, config) {
+  config = normalizeConfig(config);
+  return toNquads(microdataToRdf(microdataHtml, config));
+}
+
 exports.toJsonld = toJsonld;
 exports.toJson = toJson;
+exports.toRdf = toRdf;
